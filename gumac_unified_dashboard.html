@@ -1,0 +1,2761 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GUMAC · Marketing Intelligence Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+/* ============ CORE THEME (Atelier CRM) ============ */
+:root, :root[data-theme="dark"]{
+  --bg: #0a0a0c;
+  --bg-2: #14141a;
+  --bg-3: #1a1a22;
+  --surface: #18181f;
+  --surface-2: #1e1e27;
+  --surface-3: #24242e;
+  --line: rgba(245, 181, 68, 0.08);
+  --line-2: rgba(245, 181, 68, 0.18);
+  --line-soft: rgba(255,255,255,0.06);
+  --amber: #f5b544;
+  --amber-bright: #ffc560;
+  --amber-deep: #d49032;
+  --amber-glow: rgba(245, 181, 68, 0.25);
+  --amber-soft: rgba(245, 181, 68, 0.08);
+  --ink: #ffffff;
+  --ink-2: #e8e8ec;
+  --muted: #9095a0;
+  --muted-2: #6b7080;
+  --muted-3: #4a4e5c;
+  --green: #5fd49a;
+  --red: #ff6e7a;
+  --blue: #6ba3ff;
+  --violet: #b89aff;
+  --shadow-amber: 0 0 30px -8px rgba(245, 181, 68, 0.4);
+  --shadow-soft: 0 8px 32px -8px rgba(0,0,0,0.6);
+}
+:root[data-theme="light"]{
+  --bg: #fafaf7;
+  --bg-2: #f3f1ea;
+  --bg-3: #ede9de;
+  --surface: #ffffff;
+  --surface-2: #faf8f2;
+  --surface-3: #f3f1ea;
+  --line: rgba(212, 144, 50, 0.14);
+  --line-2: rgba(212, 144, 50, 0.28);
+  --line-soft: rgba(0,0,0,0.06);
+  --amber: #c97c1a;
+  --amber-bright: #d49032;
+  --amber-deep: #a8650e;
+  --amber-glow: rgba(212, 144, 50, 0.3);
+  --amber-soft: rgba(212, 144, 50, 0.1);
+  --ink: #1a1a1f;
+  --ink-2: #2d2d35;
+  --muted: #6b7080;
+  --muted-2: #8b8f9c;
+  --muted-3: #b0b3bd;
+  --green: #2da172;
+  --red: #d04555;
+  --blue: #3b7bd9;
+  --violet: #7c5fd9;
+  --shadow-amber: 0 0 24px -8px rgba(212, 144, 50, 0.25);
+  --shadow-soft: 0 8px 24px -10px rgba(0,0,0,0.12);
+}
+*{ box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+html, body{ margin:0; padding:0; background: var(--bg); color: var(--ink); }
+body{
+  background:
+    radial-gradient(900px 500px at 15% 10%, rgba(245, 181, 68, 0.06), transparent 60%),
+    radial-gradient(700px 400px at 90% 90%, rgba(245, 181, 68, 0.04), transparent 60%),
+    var(--bg);
+  min-height: 100vh;
+  font-size: 13.5px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============ LOGIN ============ */
+.login-wrap{
+  position: fixed; inset: 0; z-index: 10000;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(600px 400px at 20% 20%, rgba(245, 181, 68, 0.08), transparent 60%),
+    radial-gradient(600px 400px at 80% 80%, rgba(245, 181, 68, 0.06), transparent 60%),
+    var(--bg);
+}
+.login-card{
+  width: 100%; max-width: 420px;
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  border: 1px solid var(--line-2);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: var(--shadow-amber), var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+}
+.login-card::before{
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+}
+.login-logo{
+  width: 56px; height: 56px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--amber-deep), var(--amber-bright));
+  display:grid; place-items:center; color: var(--bg); font-weight: 800; font-size: 22px;
+  box-shadow: 0 0 24px -4px var(--amber-glow);
+  margin-bottom: 22px;
+}
+.login-title{ font-size: 20px; font-weight: 700; margin: 0; letter-spacing: -0.01em;}
+.login-sub{ font-size: 12px; color: var(--muted); margin-top: 4px; margin-bottom: 28px;}
+.login-input{
+  width: 100%; padding: 14px 16px;
+  background: var(--bg-2);
+  border: 1px solid var(--line-2);
+  border-radius: 12px;
+  color: var(--ink); font-size: 13.5px;
+  outline: none; transition: all .2s ease;
+  margin-bottom: 14px;
+}
+.login-input:focus{
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px var(--amber-soft);
+}
+.login-btn{
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, var(--amber-deep), var(--amber));
+  color: var(--bg); font-weight: 700; font-size: 13.5px;
+  border: none; border-radius: 12px; cursor: pointer;
+  transition: all .2s ease;
+  box-shadow: 0 0 18px -4px var(--amber-glow);
+}
+.login-btn:hover{ transform: translateY(-1px); box-shadow: 0 4px 24px -4px var(--amber-glow);}
+.login-btn:disabled{ opacity: .6; cursor: not-allowed;}
+.login-err{
+  color: var(--red); font-size: 12px; margin-top: 10px;
+  min-height: 16px;
+}
+
+/* ============ LOADER ============ */
+.loader{
+  position: fixed; inset: 0; z-index: 9000;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+  background: rgba(10,10,12,0.85);
+  backdrop-filter: blur(8px);
+}
+.loader.hide{ display: none;}
+.spinner{
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 3px solid var(--line-2);
+  border-top-color: var(--amber);
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin{ to{ transform: rotate(360deg);}}
+.loader-text{ font-size: 12.5px; color: var(--muted); letter-spacing: 0.05em;}
+
+/* ============ APP LAYOUT ============ */
+.app{
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+  transition: grid-template-columns .25s ease;
+}
+.app.collapsed{ grid-template-columns: 70px 1fr;}
+
+/* ============ SIDEBAR ============ */
+.sidebar{
+  background: linear-gradient(180deg, var(--bg-2), var(--bg));
+  border-right: 1px solid var(--line);
+  padding: 22px 14px;
+  display: flex; flex-direction: column;
+  position: sticky; top: 0; height: 100vh;
+  overflow-y: auto; overflow-x: hidden;
+}
+.brand{
+  display:flex; align-items:center; gap: 12px;
+  padding: 4px 6px 18px 6px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 14px;
+  position: relative;
+}
+.brand-mark{
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--amber-deep), var(--amber-bright));
+  display:grid; place-items:center; color: var(--bg); font-weight: 800; font-size: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 0 14px -4px var(--amber-glow);
+  letter-spacing: -0.02em;
+}
+.brand-text{ transition: opacity .2s ease; min-width: 0;}
+.brand-name{ font-weight: 700; font-size: 14px; color: var(--amber); letter-spacing: 0.02em;}
+.brand-sub{ font-size: 10.5px; color: var(--muted-2); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.1em;}
+.app.collapsed .brand-text{ opacity: 0; pointer-events: none;}
+
+.toggle-btn{
+  position: absolute; top: 12px; right: -8px;
+  width: 22px; height: 22px; border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  color: var(--amber); cursor: pointer;
+  display: grid; place-items: center;
+  font-size: 10px;
+  transition: all .2s ease;
+  z-index: 10;
+}
+.toggle-btn:hover{ background: var(--amber-soft); box-shadow: 0 0 10px -2px var(--amber-glow);}
+
+/* Group header in sidebar */
+.nav-group{
+  margin-top: 14px;
+  padding: 8px 10px;
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all .2s ease;
+}
+.nav-group:hover{ background: var(--surface-2);}
+.nav-group-icon{
+  width: 22px; height: 22px; border-radius: 6px;
+  background: linear-gradient(135deg, var(--amber-deep), var(--amber-bright));
+  color: var(--bg); font-weight: 800; font-size: 11px;
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.nav-group-title{
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--amber); font-weight: 700; flex: 1;
+  transition: opacity .2s ease;
+}
+.nav-group-arrow{
+  font-size: 9px; color: var(--muted-2);
+  transition: transform .2s ease;
+}
+.nav-group.open .nav-group-arrow{ transform: rotate(90deg);}
+.app.collapsed .nav-group-title,
+.app.collapsed .nav-group-arrow{ opacity: 0; pointer-events: none;}
+
+.nav-children{
+  display: none;
+  padding-left: 4px;
+  margin-top: 4px;
+}
+.nav-group.open + .nav-children{ display: block;}
+.app.collapsed .nav-children{ padding-left: 0;}
+
+.nav-item{
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 12px; border-radius: 10px;
+  color: var(--muted); font-weight: 500; font-size: 12.5px;
+  cursor: pointer; transition: all .2s ease;
+  border: none; background: none; text-align: left; width: 100%;
+  white-space: nowrap;
+  position: relative;
+  margin-bottom: 2px;
+}
+.nav-item .nav-icon{ font-size: 13px; flex-shrink: 0; width: 18px; display: grid; place-items: center;}
+.nav-item .nav-text{ transition: opacity .2s ease; }
+.app.collapsed .nav-text{ opacity: 0; pointer-events: none;}
+.nav-item:hover{ background: var(--surface-2); color: var(--ink);}
+.nav-item.active{
+  background: linear-gradient(90deg, var(--amber-soft), transparent);
+  color: var(--amber);
+  box-shadow: inset 2px 0 0 var(--amber);
+}
+.nav-item.active .nav-icon{ color: var(--amber); text-shadow: 0 0 12px var(--amber-glow);}
+
+.sidebar-foot{
+  margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line);
+}
+.user-card{
+  display:flex; align-items: center; gap: 10px; padding: 8px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.user-avatar{
+  width: 32px; height: 32px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--amber-deep), var(--amber-bright));
+  display: grid; place-items: center;
+  color: var(--bg); font-weight: 700; font-size: 13px; flex-shrink: 0;
+}
+.user-info{ min-width: 0; transition: opacity .2s ease;}
+.user-name{ font-size: 12px; font-weight: 600; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.user-role{ font-size: 10.5px; color: var(--muted-2);}
+.app.collapsed .user-info{ opacity: 0; pointer-events: none;}
+
+.logout-btn{
+  margin-top: 8px; width: 100%; padding: 8px;
+  background: transparent; border: 1px solid var(--line);
+  border-radius: 8px; cursor: pointer; font-size: 11.5px; color: var(--muted);
+  transition: all .2s ease; font-weight: 500;
+}
+.logout-btn:hover{ background: rgba(255, 110, 122, 0.08); color: var(--red); border-color: rgba(255, 110, 122, 0.3);}
+.app.collapsed .logout-btn{ display: none;}
+
+/* ============ MAIN ============ */
+main{ padding: 24px 32px 80px 32px; max-width: 1600px; }
+
+/* Top bar */
+.topbar{
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 24px;
+}
+.crumb{
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--muted);
+}
+.crumb .crumb-cur{ color: var(--amber); font-weight: 600;}
+.crumb-sep{ color: var(--muted-3);}
+.top-actions{ margin-left: auto; display: flex; gap: 8px;}
+.icon-btn{
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--muted); cursor: pointer;
+  display: grid; place-items: center;
+  transition: all .2s ease; font-size: 14px;
+  position: relative;
+}
+.icon-btn:hover{ background: var(--surface-2); color: var(--amber); border-color: var(--line-2);}
+.badge{
+  position: absolute; top: 6px; right: 6px;
+  width: 7px; height: 7px; border-radius: 50%; background: var(--amber);
+  box-shadow: 0 0 6px var(--amber-glow);
+}
+
+/* Page heading */
+.page-header{
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 24px; margin-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 18px;
+}
+.page-title{
+  font-size: 28px; font-weight: 700; margin: 0;
+  letter-spacing: -0.02em;
+}
+.page-sub{ font-size: 12.5px; color: var(--muted); margin-top: 6px;}
+.page-actions{ display: flex; gap: 8px;}
+.btn{
+  padding: 9px 16px; border-radius: 10px;
+  background: var(--surface); border: 1px solid var(--line-2);
+  color: var(--ink); font-size: 12.5px; font-weight: 600;
+  cursor: pointer; transition: all .2s ease;
+}
+.btn:hover{ background: var(--surface-2); border-color: var(--amber);}
+.btn-amber{
+  background: linear-gradient(135deg, var(--amber-deep), var(--amber));
+  color: var(--bg); border: none;
+  box-shadow: 0 0 14px -4px var(--amber-glow);
+}
+.btn-amber:hover{ transform: translateY(-1px); box-shadow: 0 4px 18px -4px var(--amber-glow);}
+
+/* Sections */
+.section{ display: none; }
+.section.active{ display: block; animation: fadeUp .4s ease;}
+@keyframes fadeUp{ from{opacity:0; transform: translateY(8px);} to{opacity:1; transform:none;}}
+
+.section-head{
+  margin: 24px 0 16px 0; padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.section-no{
+  font-size: 10.5px; letter-spacing: 0.16em; color: var(--amber);
+  font-weight: 700; text-transform: uppercase;
+}
+.section-title{ font-size: 22px; font-weight: 700; margin: 4px 0 0 0; letter-spacing: -0.01em;}
+.section-desc{ color: var(--muted); font-size: 12.5px; margin-top: 6px; max-width: 720px;}
+
+/* ============ CARDS ============ */
+.card{
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+  position: relative;
+  transition: border-color .2s ease;
+}
+.card:hover{ border-color: var(--line-2);}
+.card-title{
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--muted-2); font-weight: 700; margin: 0;
+}
+.card-value{
+  font-size: 26px; font-weight: 700; letter-spacing: -0.02em;
+  margin: 8px 0 2px 0; color: var(--ink);
+}
+.card-value.amber{ color: var(--amber); text-shadow: 0 0 18px var(--amber-glow);}
+.card-value.green{ color: var(--green);}
+.card-value.red{ color: var(--red);}
+.card-sub{ font-size: 11.5px; color: var(--muted); }
+.card-trend{
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 8px; border-radius: 999px;
+  font-size: 10.5px; font-weight: 700;
+}
+.card-trend.up{ background: rgba(95, 212, 154, 0.1); color: var(--green);}
+.card-trend.down{ background: rgba(255, 110, 122, 0.1); color: var(--red);}
+.card-trend.neutral{ background: rgba(245, 181, 68, 0.08); color: var(--amber);}
+
+.kpi-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+@media (max-width: 1100px){ .kpi-grid{ grid-template-columns: repeat(2,1fr);} }
+
+.grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px;}
+.grid-3{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;}
+.grid-66-33{ display:grid; grid-template-columns: 2fr 1fr; gap: 14px;}
+.grid-33-66{ display:grid; grid-template-columns: 1fr 2fr; gap: 14px;}
+@media (max-width: 1100px){ .grid-2, .grid-3, .grid-66-33, .grid-33-66{ grid-template-columns: 1fr;} }
+
+.chart-card{ padding: 18px; }
+.chart-title{ font-size: 13px; font-weight: 700; margin: 0; color: var(--ink);}
+.chart-sub{ color: var(--muted); font-size: 11.5px; margin-top: 2px;}
+.chart-head{ display:flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px;}
+.chart-wrap{ position: relative; height: 280px;}
+.chart-wrap.tall{ height: 360px;}
+.chart-wrap.taller{ height: 420px;}
+.chart-wrap.short{ height: 180px;}
+
+/* Progress bar */
+.progress-row{ margin: 12px 0;}
+.progress-row:first-child{ margin-top: 6px;}
+.progress-label{ display: flex; justify-content: space-between; font-size: 11.5px; margin-bottom: 6px;}
+.progress-label span:first-child{ color: var(--muted);}
+.progress-label span:last-child{ color: var(--ink); font-weight: 700;}
+.progress-bar{
+  height: 8px; background: var(--bg-2); border-radius: 100px; overflow: hidden;
+  position: relative;
+}
+.progress-fill{
+  height: 100%; border-radius: 100px;
+  background: linear-gradient(90deg, var(--amber-deep), var(--amber));
+  box-shadow: 0 0 12px -2px var(--amber-glow);
+  transition: width 1s cubic-bezier(.2,.8,.2,1);
+}
+.progress-fill.green{ background: linear-gradient(90deg, var(--green), #7ee0b2);}
+.progress-fill.red{ background: linear-gradient(90deg, var(--red), #ff9aa1);}
+.progress-fill.blue{ background: linear-gradient(90deg, var(--blue), #95c0ff);}
+
+/* Tables */
+.table-card{ padding: 0; overflow: hidden;}
+.table-head{ padding: 20px 20px 0 20px; }
+.table-scroll{ overflow-x: auto;}
+table{ width: 100%; border-collapse: collapse; margin-top: 14px; min-width: 800px;}
+thead th{
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--muted-2); font-weight: 700;
+  text-align: left; padding: 12px 18px; border-bottom: 1px solid var(--line);
+  background: var(--surface-2); position: sticky; top: 0; z-index: 2;
+}
+thead th.num{ text-align: right;}
+tbody td{
+  padding: 12px 18px; font-size: 12.5px; color: var(--ink-2);
+  border-bottom: 1px solid var(--line);
+}
+tbody td.num{ text-align: right; font-variant-numeric: tabular-nums;}
+tbody tr:hover td{ background: var(--surface-2);}
+.cell-strong{ color: var(--ink); font-weight: 700;}
+.cell-amber{ color: var(--amber); font-weight: 700;}
+.cell-green{ color: var(--green); font-weight: 700;}
+.cell-red{ color: var(--red); font-weight: 700;}
+
+/* Badges / pills */
+.pill{
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; border-radius: 999px;
+  font-size: 10.5px; font-weight: 700;
+}
+.pill.green{ background: rgba(95, 212, 154, 0.12); color: var(--green);}
+.pill.red{ background: rgba(255, 110, 122, 0.12); color: var(--red);}
+.pill.amber{ background: rgba(245, 181, 68, 0.12); color: var(--amber);}
+.pill.blue{ background: rgba(107, 163, 255, 0.12); color: var(--blue);}
+.pill.muted{ background: var(--surface-2); color: var(--muted);}
+
+/* Insight cards */
+.insight-card{
+  background: linear-gradient(180deg, rgba(245, 181, 68, 0.04), transparent);
+  border: 1px solid var(--line-2);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.insight-card::before{
+  content: '';
+  position: absolute; top: 0; left: 0; height: 100%; width: 3px;
+  background: linear-gradient(180deg, var(--amber), transparent);
+}
+.insight-icon{
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--amber-soft); color: var(--amber);
+  display: grid; place-items: center; font-size: 18px;
+  margin-bottom: 10px;
+}
+.insight-title{ font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--ink);}
+.insight-text{ font-size: 12.5px; color: var(--muted); line-height: 1.7;}
+.insight-text strong{ color: var(--amber); font-weight: 700;}
+
+/* Empty state */
+.empty-state{
+  text-align: center; padding: 64px 20px;
+  color: var(--muted);
+}
+.empty-state-icon{
+  font-size: 48px; opacity: 0.4; margin-bottom: 14px;
+}
+.empty-state-title{
+  font-size: 16px; font-weight: 700; color: var(--ink-2); margin-bottom: 6px;
+}
+.empty-state-text{ font-size: 12.5px;}
+
+/* Loading skeleton */
+.skeleton{
+  background: linear-gradient(90deg, var(--surface), var(--surface-2), var(--surface));
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: 10px;
+}
+@keyframes shimmer{ 0%{ background-position: -200% 0;} 100%{ background-position: 200% 0;}}
+
+/* Responsive sidebar collapse on mobile */
+@media (max-width: 900px){
+  .app{ grid-template-columns: 1fr;}
+  .sidebar{ position: fixed; left: -260px; width: 240px; z-index: 200; transition: left .25s;}
+  .sidebar.show{ left: 0;}
+  main{ padding: 18px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="login-logo">G</div>
+    <h2 class="login-title">GUMAC · Marketing Intelligence</h2>
+    <p class="login-sub">Master Artisan · Unified Analytics Hub</p>
+    <input type="password" id="pwdInput" class="login-input" placeholder="Nhập mật khẩu" autocomplete="current-password" />
+    <button class="login-btn" onclick="checkLogin()">Đăng nhập</button>
+    <div class="login-err" id="loginErr"></div>
+    <p style="font-size: 11px; color: var(--muted-2); margin-top: 16px; text-align: center;">
+      Demo password: <strong style="color: var(--amber)">gumac2026</strong>
+    </p>
+  </div>
+</div>
+
+<!-- ===== LOADER ===== -->
+<div class="loader hide" id="loader">
+  <div class="spinner"></div>
+  <div class="loader-text" id="loaderText">Đang khởi tạo Atelier CRM…</div>
+</div>
+
+<!-- ===== APP ===== -->
+<div class="app" id="app" style="display:none">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">G</div>
+      <div class="brand-text">
+        <div class="brand-name">GUMAC · Hub</div>
+        <div class="brand-sub">Marketing Intelligence</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSidebar()" id="toggleBtn">‹</button>
+    </div>
+
+    <!-- ============= GROUP 1: ATELIER CRM ============= -->
+    <div class="nav-group open" data-group="crm">
+      <div class="nav-group-icon">1</div>
+      <span class="nav-group-title">Atelier CRM</span>
+      <span class="nav-group-arrow">▶</span>
+    </div>
+    <div class="nav-children">
+      <button class="nav-item active" data-section="crm-overview" data-group="crm"><span class="nav-icon">◈</span><span class="nav-text">Tổng quan CRM</span></button>
+      <button class="nav-item" data-section="crm-customers" data-group="crm"><span class="nav-icon">⊙</span><span class="nav-text">Khách hàng</span></button>
+      <button class="nav-item" data-section="crm-campaigns" data-group="crm"><span class="nav-icon">▤</span><span class="nav-text">Chiến dịch SMS</span></button>
+      <button class="nav-item" data-section="crm-sec1" data-group="crm"><span class="nav-icon">①</span><span class="nav-text">Hiệu quả CD</span></button>
+      <button class="nav-item" data-section="crm-sec2" data-group="crm"><span class="nav-icon">②</span><span class="nav-text">Chi nhánh</span></button>
+      <button class="nav-item" data-section="crm-sec3" data-group="crm"><span class="nav-icon">③</span><span class="nav-text">Phân khúc KH (RFM)</span></button>
+      <button class="nav-item" data-section="crm-sec4" data-group="crm"><span class="nav-icon">④</span><span class="nav-text">Hành vi mua</span></button>
+      <button class="nav-item" data-section="crm-sec5" data-group="crm"><span class="nav-icon">⑤</span><span class="nav-text">Sinh nhật VCSN</span></button>
+      <button class="nav-item" data-section="crm-sec6" data-group="crm"><span class="nav-icon">⑥</span><span class="nav-text">Định hướng</span></button>
+    </div>
+
+    <!-- ============= GROUP 2: SALES DASHBOARD ============= -->
+    <div class="nav-group" data-group="sales">
+      <div class="nav-group-icon">2</div>
+      <span class="nav-group-title">Sales Dashboard</span>
+      <span class="nav-group-arrow">▶</span>
+    </div>
+    <div class="nav-children">
+      <button class="nav-item" data-section="sales-overview" data-group="sales"><span class="nav-icon">◇</span><span class="nav-text">Tổng quan KPI</span></button>
+      <button class="nav-item" data-section="sales-trend" data-group="sales"><span class="nav-icon">◉</span><span class="nav-text">Xu hướng theo ngày</span></button>
+      <button class="nav-item" data-section="sales-daily" data-group="sales"><span class="nav-icon">◰</span><span class="nav-text">Chi tiết theo ngày</span></button>
+      <button class="nav-item" data-section="sales-branches" data-group="sales"><span class="nav-icon">◱</span><span class="nav-text">Top/Bottom CN</span></button>
+      <button class="nav-item" data-section="sales-classify" data-group="sales"><span class="nav-icon">◲</span><span class="nav-text">Phân loại CN</span></button>
+    </div>
+
+    <!-- ============= GROUP 3: DIGITAL ANALYTICS ============= -->
+    <div class="nav-group" data-group="digital">
+      <div class="nav-group-icon">3</div>
+      <span class="nav-group-title">Digital Analytics</span>
+      <span class="nav-group-arrow">▶</span>
+    </div>
+    <div class="nav-children">
+      <button class="nav-item" data-section="dig-overview" data-group="digital"><span class="nav-icon">◐</span><span class="nav-text">Overview Digital</span></button>
+      <button class="nav-item" data-section="dig-ads-kpi" data-group="digital"><span class="nav-icon">◑</span><span class="nav-text">KPI Ads &amp; YoY</span></button>
+      <button class="nav-item" data-section="dig-ads-monthly" data-group="digital"><span class="nav-icon">◒</span><span class="nav-text">Ads theo tháng</span></button>
+      <button class="nav-item" data-section="dig-ads-stores" data-group="digital"><span class="nav-icon">◓</span><span class="nav-text">Hiệu suất CH Ads</span></button>
+      <button class="nav-item" data-section="dig-ads-matrix" data-group="digital"><span class="nav-icon">▥</span><span class="nav-text">Ma trận chiến lược</span></button>
+      <button class="nav-item" data-section="dig-fb-overview" data-group="digital"><span class="nav-icon">▦</span><span class="nav-text">Fanpage tổng quan</span></button>
+      <button class="nav-item" data-section="dig-fb-growth" data-group="digital"><span class="nav-icon">▧</span><span class="nav-text">Top tăng trưởng</span></button>
+      <button class="nav-item" data-section="dig-fb-content" data-group="digital"><span class="nav-icon">▨</span><span class="nav-text">Top nội dung</span></button>
+      <button class="nav-item" data-section="dig-fb-weak" data-group="digital"><span class="nav-icon">▩</span><span class="nav-text">Fanpage yếu kém</span></button>
+      <button class="nav-item" data-section="dig-action" data-group="digital"><span class="nav-icon">▶</span><span class="nav-text">Action Plan T6</span></button>
+    </div>
+
+    <div class="sidebar-foot">
+      <div class="user-card">
+        <div class="user-avatar">D</div>
+        <div class="user-info">
+          <div class="user-name">Digital Team</div>
+          <div class="user-role">GUMAC · Leader</div>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="logout()">Đăng xuất</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+    <div class="topbar">
+      <div class="crumb">
+        <span id="crumbGroup">Atelier CRM</span>
+        <span class="crumb-sep">›</span>
+        <span class="crumb-cur" id="crumbPage">Tổng quan CRM</span>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="themeToggle" onclick="toggleTheme()" title="Đổi giao diện sáng/tối"><span id="themeIcon">☀</span></button>
+        <button class="icon-btn" title="Notifications" style="position:relative">
+          <span>◷</span><span class="badge"></span>
+        </button>
+        <button class="icon-btn" title="Settings"><span>⚙</span></button>
+      </div>
+    </div>
+
+    <!-- ====================================================== -->
+    <!-- ============= GROUP 1 · ATELIER CRM =================== -->
+    <!-- ====================================================== -->
+
+    <!-- ----- 1.1 CRM Overview ----- -->
+    <div class="section active" id="section-crm-overview">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">CRM Monitor</h1>
+          <p class="page-sub">Real-time telemetry · Tổng quan toàn hệ thống GUMAC SMS Marketing</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn">Xuất báo cáo</button>
+          <button class="btn btn-amber">Tạo chiến dịch</button>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="card">
+          <p class="card-title">SMS đã gửi</p>
+          <div class="card-value">128.450</div>
+          <div class="card-sub">5 chiến dịch · 6 tháng</div>
+        </div>
+        <div class="card">
+          <p class="card-title">KH đã chuyển đổi</p>
+          <div class="card-value">3.282</div>
+          <div class="card-sub">CR trung bình 2.56%</div>
+        </div>
+        <div class="card">
+          <p class="card-title">Doanh thu từ SMS</p>
+          <div class="card-value amber">2.85 tỷ</div>
+          <div class="card-sub">ATV 868K</div>
+        </div>
+        <div class="card">
+          <p class="card-title">ROI</p>
+          <div class="card-value amber">42.8x</div>
+          <div class="card-sub">Chi phí 66.5tr</div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 14px;">
+        <div class="card">
+          <p class="card-title" style="margin-bottom: 14px;">Performance Monitor</p>
+          <div class="progress-row">
+            <div class="progress-label"><span>Tỷ lệ chuyển đổi (CR)</span><span>2.56%</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:51%"></div></div>
+          </div>
+          <div class="progress-row">
+            <div class="progress-label"><span>Tỷ lệ sử dụng voucher</span><span>68.4%</span></div>
+            <div class="progress-bar"><div class="progress-fill green" style="width:68%"></div></div>
+          </div>
+          <div class="progress-row">
+            <div class="progress-label"><span>Đóng góp SMS / Tổng DT</span><span>4.7%</span></div>
+            <div class="progress-bar"><div class="progress-fill blue" style="width:47%"></div></div>
+          </div>
+          <div class="progress-row">
+            <div class="progress-label"><span>Chi phí SMS / Doanh thu</span><span>2.3%</span></div>
+            <div class="progress-bar"><div class="progress-fill red" style="width:23%"></div></div>
+          </div>
+        </div>
+
+        <div class="card" style="display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px;">
+          <p class="card-title">SYSTEM HEALTH</p>
+          <div style="position:relative; width:140px; height:140px; margin-top:14px;">
+            <canvas id="ch_crmGauge" width="140" height="140"></canvas>
+            <div style="position:absolute; inset:0; display:grid; place-items:center; flex-direction:column;">
+              <div style="font-size:28px; color:var(--green); text-shadow:0 0 14px rgba(95,212,154,0.5);">✓</div>
+              <div style="font-size:10.5px; color:var(--muted); margin-top:4px; letter-spacing:0.12em; font-weight:700;">NOMINAL</div>
+            </div>
+          </div>
+          <div style="margin-top:16px; font-size:22px; font-weight:700; color:var(--amber); text-shadow:0 0 12px var(--amber-glow);">82</div>
+          <div style="font-size:11.5px; color:var(--muted);">Campaign Health Score</div>
+        </div>
+      </div>
+
+      <div class="grid-66-33" style="margin-top: 14px;">
+        <div class="card chart-card">
+          <div class="chart-head">
+            <div>
+              <p class="chart-title">Doanh thu toàn hệ thống theo ngày</p>
+              <p class="chart-sub">Real-time revenue telemetry · 30 ngày gần nhất</p>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="ch_crm_revenue"></canvas></div>
+        </div>
+
+        <div class="card">
+          <p class="card-title" style="margin-bottom: 14px;">Cảnh báo &amp; Hành động</p>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div style="padding:10px 12px; background:rgba(255,110,122,0.08); border-left:2px solid var(--red); border-radius:6px;">
+              <div style="font-size:11.5px; font-weight:700; color:var(--red); margin-bottom:2px;">⚠ CR giảm</div>
+              <div style="font-size:11px; color:var(--muted);">CD VCSN05.26 đang có CR thấp hơn TB 23%</div>
+            </div>
+            <div style="padding:10px 12px; background:rgba(245,181,68,0.08); border-left:2px solid var(--amber); border-radius:6px;">
+              <div style="font-size:11.5px; font-weight:700; color:var(--amber); margin-bottom:2px;">◷ Voucher hết hạn</div>
+              <div style="font-size:11px; color:var(--muted);">412 KH chưa dùng voucher · còn 5 ngày</div>
+            </div>
+            <div style="padding:10px 12px; background:rgba(95,212,154,0.08); border-left:2px solid var(--green); border-radius:6px;">
+              <div style="font-size:11.5px; font-weight:700; color:var(--green); margin-bottom:2px;">✓ Top phân khúc</div>
+              <div style="font-size:11px; color:var(--muted);">Champions tăng 18% đóng góp doanh thu</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- 1.2 Customers ----- -->
+    <div class="section" id="section-crm-customers">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Customer Archive</h1>
+          <p class="page-sub">Quản lý danh sách &amp; lịch sử khách hàng · 360° view</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn">Lọc nâng cao</button>
+          <button class="btn btn-amber">Xuất danh sách</button>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="card"><p class="card-title">Tổng KH</p><div class="card-value">48.273</div><div class="card-sub">+1.245 tháng này</div></div>
+        <div class="card"><p class="card-title">KH active 30d</p><div class="card-value">12.840</div><div class="card-sub">26.6% tổng KH</div></div>
+        <div class="card"><p class="card-title">KH Champions</p><div class="card-value amber">3.156</div><div class="card-sub">6.5% · DT 18.4 tỷ</div></div>
+        <div class="card"><p class="card-title">KH ngủ đông</p><div class="card-value red">9.482</div><div class="card-sub">19.6% · cần re-activate</div></div>
+      </div>
+
+      <div class="card chart-card" style="margin-top: 14px;">
+        <div class="chart-head">
+          <div>
+            <p class="chart-title">Top khách hàng theo doanh thu</p>
+            <p class="chart-sub">Top 10 VIP · Lifetime value cao nhất</p>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Khách hàng</th>
+                <th>SĐT</th>
+                <th>Phân khúc</th>
+                <th class="num">Đơn</th>
+                <th class="num">ATV</th>
+                <th class="num">Doanh thu (LTV)</th>
+                <th>Chi nhánh</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="cell-strong">Nguyễn Thị Hà</td><td>0903***123</td><td><span class="pill amber">Champions</span></td><td class="num">42</td><td class="num">1.840.000</td><td class="num cell-amber">77.280.000</td><td>Q1 Lê Lai</td></tr>
+              <tr><td class="cell-strong">Trần Mai Anh</td><td>0908***456</td><td><span class="pill amber">Champions</span></td><td class="num">38</td><td class="num">1.620.000</td><td class="num cell-amber">61.560.000</td><td>Q7 Phú Mỹ Hưng</td></tr>
+              <tr><td class="cell-strong">Lê Phương Linh</td><td>0912***789</td><td><span class="pill amber">Champions</span></td><td class="num">35</td><td class="num">1.530.000</td><td class="num cell-amber">53.550.000</td><td>Q1 Lê Lai</td></tr>
+              <tr><td class="cell-strong">Phạm Thu Trang</td><td>0976***234</td><td><span class="pill green">Loyal</span></td><td class="num">31</td><td class="num">1.410.000</td><td class="num">43.710.000</td><td>Bình Thạnh</td></tr>
+              <tr><td class="cell-strong">Đặng Hồng Nhung</td><td>0944***567</td><td><span class="pill green">Loyal</span></td><td class="num">28</td><td class="num">1.350.000</td><td class="num">37.800.000</td><td>Tân Bình</td></tr>
+              <tr><td class="cell-strong">Vũ Minh Tâm</td><td>0922***890</td><td><span class="pill green">Loyal</span></td><td class="num">26</td><td class="num">1.290.000</td><td class="num">33.540.000</td><td>Q7 Phú Mỹ Hưng</td></tr>
+              <tr><td class="cell-strong">Hoàng Khánh Vy</td><td>0933***012</td><td><span class="pill blue">Potential</span></td><td class="num">22</td><td class="num">1.180.000</td><td class="num">25.960.000</td><td>Gò Vấp</td></tr>
+              <tr><td class="cell-strong">Bùi Thuỳ Dương</td><td>0966***345</td><td><span class="pill blue">Potential</span></td><td class="num">19</td><td class="num">1.120.000</td><td class="num">21.280.000</td><td>Q9</td></tr>
+              <tr><td class="cell-strong">Đỗ Thanh Hằng</td><td>0988***678</td><td><span class="pill blue">Potential</span></td><td class="num">17</td><td class="num">1.080.000</td><td class="num">18.360.000</td><td>Cần Thơ</td></tr>
+              <tr><td class="cell-strong">Ngô Thuý Quỳnh</td><td>0911***901</td><td><span class="pill muted">New</span></td><td class="num">15</td><td class="num">980.000</td><td class="num">14.700.000</td><td>Biên Hoà</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- 1.3 Campaigns ----- -->
+    <div class="section" id="section-crm-campaigns">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Campaign Workshop</h1>
+          <p class="page-sub">Quản lý chiến dịch SMS · Theo dõi hiệu suất &amp; ROI</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-amber">+ Chiến dịch mới</button>
+        </div>
+      </div>
+
+      <div class="card table-card">
+        <div class="table-head">
+          <p class="chart-title">Danh sách chiến dịch SMS</p>
+          <p class="chart-sub">Trạng thái · Chi phí · KPI · ROI</p>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Chiến dịch</th>
+                <th>Tháng</th>
+                <th class="num">SMS gửi</th>
+                <th class="num">KH unique</th>
+                <th class="num">CR</th>
+                <th class="num">Đơn</th>
+                <th class="num">ATV</th>
+                <th class="num">Doanh thu</th>
+                <th class="num">Chi phí</th>
+                <th class="num">ROI</th>
+                <th>Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="cell-strong">VCSN05.26 · Sinh nhật</td><td>05/2026</td><td class="num">28.450</td><td class="num">24.120</td><td class="num cell-amber">3.12%</td><td class="num">753</td><td class="num">920.000</td><td class="num cell-amber">692.760.000</td><td class="num">14.225.000</td><td class="num cell-green">48.7x</td><td><span class="pill green">Đang chạy</span></td></tr>
+              <tr><td class="cell-strong">SALE04.26 · Khai trương Hè</td><td>04/2026</td><td class="num">35.200</td><td class="num">29.800</td><td class="num">2.86%</td><td class="num">852</td><td class="num">880.000</td><td class="num cell-amber">749.760.000</td><td class="num">17.600.000</td><td class="num cell-green">42.6x</td><td><span class="pill muted">Hoàn tất</span></td></tr>
+              <tr><td class="cell-strong">FLASH03.26 · 3 ngày vàng</td><td>03/2026</td><td class="num">22.100</td><td class="num">19.450</td><td class="num">2.45%</td><td class="num">477</td><td class="num">850.000</td><td class="num">405.450.000</td><td class="num">11.050.000</td><td class="num cell-amber">36.7x</td><td><span class="pill muted">Hoàn tất</span></td></tr>
+              <tr><td class="cell-strong">REACT02.26 · Re-activate</td><td>02/2026</td><td class="num">18.600</td><td class="num">16.200</td><td class="num">1.92%</td><td class="num">311</td><td class="num">820.000</td><td class="num">255.020.000</td><td class="num">9.300.000</td><td class="num cell-amber">27.4x</td><td><span class="pill muted">Hoàn tất</span></td></tr>
+              <tr><td class="cell-strong">TET01.26 · Tết Bính Ngọ</td><td>01/2026</td><td class="num">24.100</td><td class="num">21.300</td><td class="num">3.78%</td><td class="num">805</td><td class="num">935.000</td><td class="num cell-amber">752.675.000</td><td class="num">14.350.000</td><td class="num cell-green">52.5x</td><td><span class="pill muted">Hoàn tất</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 14px;">
+        <div class="card chart-card">
+          <div class="chart-head">
+            <div><p class="chart-title">SMS gửi vs Chuyển đổi</p><p class="chart-sub">So sánh quy mô gửi tin và số KH chốt mua</p></div>
+          </div>
+          <div class="chart-wrap"><canvas id="ch_camp_sentConv"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head">
+            <div><p class="chart-title">Doanh thu vs Chi phí SMS</p><p class="chart-sub">Lợi ích kinh tế của từng chiến dịch</p></div>
+          </div>
+          <div class="chart-wrap"><canvas id="ch_camp_revCost"></canvas></div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 14px;">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">ROI từng chiến dịch</p><p class="chart-sub">Tỷ suất hoàn vốn (DT / Chi phí)</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_camp_roi"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Tỷ lệ chuyển đổi (CR)</p><p class="chart-sub">Hiệu quả tệp KH mỗi chiến dịch</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_camp_cr"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- 1.4 CRM Section 1: Hiệu quả CD ----- -->
+    <div class="section" id="section-crm-sec1">
+      <div class="section-head">
+        <div class="section-no">Mục 01 · Campaign Analytics</div>
+        <h1 class="section-title">Hiệu quả từng chiến dịch SMS</h1>
+        <p class="section-desc">Phân tích sâu hiệu quả của từng chiến dịch theo các chỉ số cốt lõi: CR, ROI, ATV, đóng góp doanh thu.</p>
+      </div>
+
+      <div class="card table-card">
+        <div class="table-head"><p class="chart-title">Bảng so sánh chi tiết các chiến dịch</p></div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Chiến dịch</th><th class="num">SMS gửi</th><th class="num">KH chuyển đổi</th><th class="num">CR</th><th class="num">Doanh thu</th><th class="num">ATV</th><th class="num">ROI</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-strong">VCSN05.26</td><td class="num">28.450</td><td class="num">753</td><td class="num cell-amber">3.12%</td><td class="num cell-amber">692.76M</td><td class="num">920K</td><td class="num cell-green">48.7x</td></tr>
+              <tr><td class="cell-strong">SALE04.26</td><td class="num">35.200</td><td class="num">852</td><td class="num">2.86%</td><td class="num cell-amber">749.76M</td><td class="num">880K</td><td class="num cell-green">42.6x</td></tr>
+              <tr><td class="cell-strong">FLASH03.26</td><td class="num">22.100</td><td class="num">477</td><td class="num">2.45%</td><td class="num">405.45M</td><td class="num">850K</td><td class="num cell-amber">36.7x</td></tr>
+              <tr><td class="cell-strong">REACT02.26</td><td class="num">18.600</td><td class="num">311</td><td class="num cell-red">1.92%</td><td class="num">255.02M</td><td class="num">820K</td><td class="num cell-amber">27.4x</td></tr>
+              <tr><td class="cell-strong">TET01.26</td><td class="num">24.100</td><td class="num">805</td><td class="num cell-green">3.78%</td><td class="num cell-amber">752.68M</td><td class="num">935K</td><td class="num cell-green">52.5x</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 14px;">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Tỷ lệ chuyển đổi (CR)</p><p class="chart-sub">So sánh CR giữa các chiến dịch</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s1_cr"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Doanh thu &amp; ATV</p><p class="chart-sub">Doanh thu chiến dịch và giá trị đơn TB</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s1_revAtv"></canvas></div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 14px;">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Funnel: Gửi → KH unique → KH mua</p><p class="chart-sub">Theo dõi tỷ lệ rớt qua từng bước</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s1_funnel"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Đóng góp tổng doanh thu</p><p class="chart-sub">% đóng góp của từng chiến dịch</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s1_contrib"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- 1.5 CRM Section 2: Chi nhánh ----- -->
+    <div class="section" id="section-crm-sec2">
+      <div class="section-head">
+        <div class="section-no">Mục 02 · Branch Analytics</div>
+        <h1 class="section-title">Phân tích theo chi nhánh</h1>
+        <p class="section-desc">So sánh hiệu suất SMS Marketing giữa các chi nhánh - xác định CN nào đang khai thác tệp khách hàng tốt nhất.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Top 10 chi nhánh · SMS nhận</p><p class="chart-sub">Theo số lượt SMS đã gửi tới KH</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s2_smsRcv"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Top 10 chi nhánh · Doanh thu từ SMS</p><p class="chart-sub">DT được attribute từ SMS Marketing</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s2_smsRev"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card chart-card" style="margin-top: 14px;">
+        <div class="chart-head"><div><p class="chart-title">Ma trận hiệu quả chi nhánh</p><p class="chart-sub">Trục X: SMS gửi · Trục Y: CR · Bubble size: DT</p></div></div>
+        <div class="chart-wrap tall"><canvas id="ch_s2_matrix"></canvas></div>
+      </div>
+
+      <div class="card table-card" style="margin-top: 14px;">
+        <div class="table-head"><p class="chart-title">Bảng đối chiếu chi tiết theo chi nhánh</p></div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Chi nhánh</th><th class="num">SMS gửi</th><th class="num">KH unique</th><th class="num">CR</th><th class="num">Doanh thu SMS</th><th class="num">ATV</th><th>Đánh giá</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-strong">Q1 Lê Lai</td><td class="num">12.800</td><td class="num">11.200</td><td class="num cell-green">3.45%</td><td class="num cell-amber">358.4M</td><td class="num">925K</td><td><span class="pill green">Vô địch</span></td></tr>
+              <tr><td class="cell-strong">Q7 Phú Mỹ Hưng</td><td class="num">11.200</td><td class="num">9.850</td><td class="num cell-green">3.28%</td><td class="num cell-amber">301.2M</td><td class="num">910K</td><td><span class="pill green">Vô địch</span></td></tr>
+              <tr><td class="cell-strong">Bình Thạnh</td><td class="num">9.800</td><td class="num">8.500</td><td class="num">2.92%</td><td class="num">228.3M</td><td class="num">895K</td><td><span class="pill amber">Tiềm năng</span></td></tr>
+              <tr><td class="cell-strong">Tân Bình</td><td class="num">8.500</td><td class="num">7.400</td><td class="num">2.78%</td><td class="num">192.5M</td><td class="num">880K</td><td><span class="pill amber">Tiềm năng</span></td></tr>
+              <tr><td class="cell-strong">Gò Vấp</td><td class="num">7.200</td><td class="num">6.250</td><td class="num">2.45%</td><td class="num">142.8M</td><td class="num">855K</td><td><span class="pill blue">Bình thường</span></td></tr>
+              <tr><td class="cell-strong">Q9</td><td class="num">6.800</td><td class="num">5.920</td><td class="num">2.32%</td><td class="num">125.4M</td><td class="num">845K</td><td><span class="pill blue">Bình thường</span></td></tr>
+              <tr><td class="cell-strong">Biên Hoà</td><td class="num">5.500</td><td class="num">4.780</td><td class="num cell-red">1.85%</td><td class="num">85.6M</td><td class="num">820K</td><td><span class="pill red">Cần hỗ trợ</span></td></tr>
+              <tr><td class="cell-strong">Cần Thơ</td><td class="num">4.200</td><td class="num">3.650</td><td class="num cell-red">1.72%</td><td class="num">62.3M</td><td class="num">810K</td><td><span class="pill red">Cần hỗ trợ</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- 1.6 CRM Section 3: RFM ----- -->
+    <div class="section" id="section-crm-sec3">
+      <div class="section-head">
+        <div class="section-no">Mục 03 · Segment Analytics</div>
+        <h1 class="section-title">Phân khúc khách hàng (RFM)</h1>
+        <p class="section-desc">Phân tích KH theo Recency · Frequency · Monetary để xác định nhóm KH có tiềm năng cao nhất.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">SMS gửi vs KH chuyển đổi</p><p class="chart-sub">Theo từng phân khúc RFM</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s3_sentConv"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">CR theo phân khúc</p><p class="chart-sub">Phân khúc nào phản hồi SMS tốt nhất</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s3_cr"></canvas></div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 14px;">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Doanh thu theo RFM</p><p class="chart-sub">Đóng góp doanh thu theo phân khúc</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s3_rev"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">ATV theo phân khúc</p><p class="chart-sub">Giá trị đơn TB theo nhóm KH</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s3_atv"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card chart-card" style="margin-top: 14px;">
+        <div class="chart-head"><div><p class="chart-title">Phân bố giới tính phản hồi SMS</p><p class="chart-sub">Tỷ lệ Nam/Nữ trong từng phân khúc</p></div></div>
+        <div class="chart-wrap tall"><canvas id="ch_s3_gender"></canvas></div>
+      </div>
+
+      <div class="card table-card" style="margin-top: 14px;">
+        <div class="table-head"><p class="chart-title">Bảng hiệu suất phân khúc</p></div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Phân khúc</th><th class="num">Số KH</th><th class="num">% Tổng</th><th class="num">SMS gửi</th><th class="num">CR</th><th class="num">Doanh thu</th><th class="num">ATV</th></tr></thead>
+            <tbody>
+              <tr><td><span class="pill amber">Champions</span></td><td class="num">3.156</td><td class="num">6.5%</td><td class="num">15.420</td><td class="num cell-green">5.82%</td><td class="num cell-amber">1.045M</td><td class="num">1.165K</td></tr>
+              <tr><td><span class="pill green">Loyal Customers</span></td><td class="num">5.480</td><td class="num">11.3%</td><td class="num">23.100</td><td class="num cell-green">4.25%</td><td class="num cell-amber">856M</td><td class="num">980K</td></tr>
+              <tr><td><span class="pill blue">Potential Loyalists</span></td><td class="num">8.920</td><td class="num">18.5%</td><td class="num">28.450</td><td class="num">3.12%</td><td class="num">524M</td><td class="num">890K</td></tr>
+              <tr><td><span class="pill muted">New Customers</span></td><td class="num">6.450</td><td class="num">13.4%</td><td class="num">12.800</td><td class="num">2.48%</td><td class="num">235M</td><td class="num">820K</td></tr>
+              <tr><td><span class="pill amber">Need Attention</span></td><td class="num">7.230</td><td class="num">15.0%</td><td class="num">18.600</td><td class="num cell-red">1.95%</td><td class="num">152M</td><td class="num">795K</td></tr>
+              <tr><td><span class="pill red">Hibernating</span></td><td class="num">9.482</td><td class="num">19.6%</td><td class="num">22.100</td><td class="num cell-red">1.42%</td><td class="num">96M</td><td class="num">760K</td></tr>
+              <tr><td><span class="pill red">Lost</span></td><td class="num">7.555</td><td class="num">15.7%</td><td class="num">7.980</td><td class="num cell-red">0.85%</td><td class="num">38M</td><td class="num">730K</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- 1.7 CRM Section 4: Hành vi mua ----- -->
+    <div class="section" id="section-crm-sec4">
+      <div class="section-head">
+        <div class="section-no">Mục 04 · Behavior Analytics</div>
+        <h1 class="section-title">Hành vi khách hàng</h1>
+        <p class="section-desc">Phân tích thời điểm mua, tần suất, giá trị đơn để tối ưu thời gian gửi SMS và chiến lược voucher.</p>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="card"><p class="card-title">Số đơn TB / KH</p><div class="card-value">2.8</div><div class="card-sub">đơn/tháng</div></div>
+        <div class="card"><p class="card-title">Khoảng cách mua TB</p><div class="card-value">42</div><div class="card-sub">ngày giữa 2 đơn</div></div>
+        <div class="card"><p class="card-title">ATV toàn hệ thống</p><div class="card-value amber">868K</div><div class="card-sub">đơn TB</div></div>
+        <div class="card"><p class="card-title">Tỷ lệ dùng voucher</p><div class="card-value green">68.4%</div><div class="card-sub">trong 7 ngày</div></div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 14px;">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Doanh thu theo ngày</p><p class="chart-sub">Xu hướng 30 ngày gần nhất</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s4_dailyRev"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Tần suất mua</p><p class="chart-sub">Phân bố số đơn / KH</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s4_freq"></canvas></div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 14px;">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Doanh thu theo thứ trong tuần</p><p class="chart-sub">Ngày nào trong tuần KH mua nhiều nhất</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s4_dow"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Phân bố giá trị đơn hàng</p><p class="chart-sub">Histogram ATV theo dải giá</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s4_atvDist"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card chart-card" style="margin-top: 14px;">
+        <div class="chart-head"><div><p class="chart-title">Tỷ lệ sử dụng voucher theo ngày sau SMS</p><p class="chart-sub">KH dùng voucher tập trung vào ngày thứ mấy</p></div></div>
+        <div class="chart-wrap tall"><canvas id="ch_s4_voucherDay"></canvas></div>
+      </div>
+    </div>
+
+    <!-- ----- 1.8 CRM Section 5: VCSN ----- -->
+    <div class="section" id="section-crm-sec5">
+      <div class="section-head">
+        <div class="section-no">Mục 05 · Birthday Offline Campaign</div>
+        <h1 class="section-title">Chiến dịch sinh nhật OFFLINE · VCSN05.26</h1>
+        <p class="section-desc">Phân tích sâu chiến dịch sinh nhật đang chạy - tracking funnel, hiệu quả theo nhóm và chi nhánh.</p>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="card"><p class="card-title">KH sinh nhật T5</p><div class="card-value">24.120</div><div class="card-sub">được gửi voucher</div></div>
+        <div class="card"><p class="card-title">KH đến cửa hàng</p><div class="card-value">2.842</div><div class="card-sub">11.8% conversion</div></div>
+        <div class="card"><p class="card-title">KH mua hàng</p><div class="card-value amber">753</div><div class="card-sub">CR 3.12%</div></div>
+        <div class="card"><p class="card-title">Doanh thu CD</p><div class="card-value amber">692.76M</div><div class="card-sub">ROI 48.7x</div></div>
+      </div>
+
+      <div class="card chart-card" style="margin-top: 14px;">
+        <div class="chart-head"><div><p class="chart-title">Funnel chiến dịch sinh nhật</p><p class="chart-sub">SMS gửi → Click → Đến CH → Thử đồ → Mua</p></div></div>
+        <div class="chart-wrap tall"><canvas id="ch_s5_funnel"></canvas></div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 14px;">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Phân bố nhóm KH VCSN</p><p class="chart-sub">Mới · Thân thiết · VIP</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s5_group"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Doanh thu &amp; ATV theo nhóm</p><p class="chart-sub">Nhóm VIP đóng góp lớn nhất</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s5_groupRev"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card chart-card" style="margin-top: 14px;">
+        <div class="chart-head"><div><p class="chart-title">Top chi nhánh đón sinh nhật nhiều nhất</p><p class="chart-sub">Theo số KH VCSN đến cửa hàng</p></div></div>
+        <div class="chart-wrap tall"><canvas id="ch_s5_branch"></canvas></div>
+      </div>
+    </div>
+
+    <!-- ----- 1.9 CRM Section 6: Định hướng ----- -->
+    <div class="section" id="section-crm-sec6">
+      <div class="section-head">
+        <div class="section-no">Mục 06 · Strategic Direction</div>
+        <h1 class="section-title">Định hướng phát triển SMS Marketing</h1>
+        <p class="section-desc">Benchmark ngành thời trang Việt Nam và đề xuất chiến lược 6 tháng tiếp theo cho SMS Marketing.</p>
+      </div>
+
+      <div class="card chart-card">
+        <div class="chart-head"><div><p class="chart-title">Đối chiếu với chuẩn ngành thời trang Việt Nam</p><p class="chart-sub">GUMAC vs Benchmark Industry · các chỉ số cốt lõi</p></div></div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Chỉ số</th><th class="num">GUMAC</th><th class="num">Benchmark</th><th class="num">Chênh lệch</th><th>Đánh giá</th></tr></thead>
+            <tbody>
+              <tr><td>Open rate SMS</td><td class="num cell-strong">94%</td><td class="num">90-95%</td><td class="num">In range</td><td><span class="pill green">Tốt</span></td></tr>
+              <tr><td>CR trung bình</td><td class="num cell-strong">2.56%</td><td class="num">1.5-3%</td><td class="num">Trung bình cao</td><td><span class="pill green">Tốt</span></td></tr>
+              <tr><td>ROI SMS</td><td class="num cell-strong">42.8x</td><td class="num">20-40x</td><td class="num cell-green">+7%</td><td><span class="pill green">Vượt</span></td></tr>
+              <tr><td>ATV</td><td class="num cell-strong">868K</td><td class="num">600-900K</td><td class="num">In range</td><td><span class="pill green">Tốt</span></td></tr>
+              <tr><td>Tỷ lệ dùng voucher</td><td class="num cell-strong">68.4%</td><td class="num">40-60%</td><td class="num cell-green">+14%</td><td><span class="pill green">Vượt</span></td></tr>
+              <tr><td>% KH ngủ đông</td><td class="num cell-amber">19.6%</td><td class="num">10-15%</td><td class="num cell-red">+5đ</td><td><span class="pill amber">Cần cải thiện</span></td></tr>
+              <tr><td>Đóng góp SMS/tổng DT</td><td class="num cell-amber">4.7%</td><td class="num">5-10%</td><td class="num cell-red">-0.3đ</td><td><span class="pill amber">Cần đẩy lên</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 14px;">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Radar hiệu suất tổng thể</p><p class="chart-sub">6 trục đo so với benchmark</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s6_radar"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Maturity Score</p><p class="chart-sub">Độ trưởng thành CRM tổng thể</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_s6_maturity"></canvas></div>
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-icon">✦</div>
+        <div class="insight-title">Định hướng &amp; lộ trình hành động 6 tháng</div>
+        <div class="insight-text">
+          GUMAC đang ở mức <strong>"Vượt chuẩn"</strong> ở 5/7 chỉ số quan trọng (Open rate, CR, ROI, ATV, voucher usage). Hai vấn đề cần giải quyết: <strong>(1)</strong> tỷ lệ KH ngủ đông cao 19.6% (chuẩn 10-15%) - cần CD re-activate quy mô lớn; <strong>(2)</strong> SMS chỉ đóng góp 4.7% tổng DT - chưa khai thác hết tiềm năng.<br><br>
+          <strong>Lộ trình 6 tháng:</strong> T6 ra mắt CD re-activate cho 9.482 KH ngủ đông (target win-back 8%, DT 38M); T7-T8 setup automation gửi SMS theo lifecycle KH; T9-T10 A/B test creative SMS để đẩy CR trung bình lên 3.5%; T11-T12 mở rộng đa kênh (Zalo OA + Email) để giảm dependency lên một kênh duy nhất.
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-icon">▶</div>
+        <div class="insight-title">6 đề xuất chiến lược cụ thể</div>
+        <div class="insight-text">
+          <strong>1. Re-activate Campaign Q3:</strong> Target 9.482 KH ngủ đông với voucher 200K + thông điệp cá nhân hoá. Ngân sách 4.7tr · Mục tiêu DT 38M.<br>
+          <strong>2. Lifecycle Automation:</strong> Setup flow tự động cho KH mới (D1, D7, D30) và KH inactive (60d, 90d, 180d). Giảm 70% manual work.<br>
+          <strong>3. Hyper-personalization:</strong> Phân khúc SMS theo size + style đã mua. Pilot test trên 5K KH Champions.<br>
+          <strong>4. SMS + Voucher dynamic:</strong> Voucher tự động điều chỉnh theo phân khúc (Champions 500K, Loyal 300K, Hibernating 200K).<br>
+          <strong>5. Multi-channel expansion:</strong> Tích hợp Zalo OA và Email để bù đắp khi SMS không deliver được (5-6% bounce).<br>
+          <strong>6. SMS analytics dashboard:</strong> Real-time tracking với alert tự động khi CR rớt dưới ngưỡng 2%.
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================== -->
+    <!-- ============= GROUP 2 · SALES DASHBOARD =============== -->
+    <!-- ====================================================== -->
+
+    <!-- ----- 2.1 Sales Overview ----- -->
+    <div class="section" id="section-sales-overview">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Sales Dashboard</h1>
+          <p class="page-sub">Tổng quan KPI doanh thu &amp; chỉ số bán hàng · Kỳ phân tích: 01/05 → 24/05/2026</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn">Chia sẻ</button>
+          <button class="btn btn-amber">Xuất CSV</button>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="card"><p class="card-title">Doanh thu</p><div class="card-value amber">52.34 tỷ</div><div style="margin-top:6px"><span class="card-trend up">↑ 12.5% vs MT</span> <span class="card-trend up">↑ 8.2% vs CK</span></div></div>
+        <div class="card"><p class="card-title">Traffic</p><div class="card-value">142.580</div><div style="margin-top:6px"><span class="card-trend up">↑ 5.8% vs MT</span> <span class="card-trend up">↑ 14.2% vs CK</span></div></div>
+        <div class="card"><p class="card-title">ATV</p><div class="card-value">920K</div><div style="margin-top:6px"><span class="card-trend up">↑ 4.2% vs MT</span> <span class="card-trend up">↑ 6.5% vs CK</span></div></div>
+        <div class="card"><p class="card-title">CRV</p><div class="card-value">38.92%</div><div style="margin-top:6px"><span class="card-trend up">↑ 2.1đ vs MT</span> <span class="card-trend down">↓ 0.8đ vs CK</span></div></div>
+      </div>
+
+      <div class="card chart-card" style="margin-top: 14px;">
+        <div class="chart-head">
+          <div><p class="chart-title">Tổng quan các chỉ số · Thực đạt vs Mục tiêu vs Cùng kỳ</p><p class="chart-sub">7 chỉ số cốt lõi: Doanh thu · Đơn hàng · Sản phẩm · Traffic · ATV · UPT · CRV</p></div>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Chỉ số</th><th class="num">Thực đạt</th><th class="num">Mục tiêu</th><th class="num">% Hoàn thành</th><th class="num">vs MT</th><th class="num">Cùng kỳ</th><th class="num">vs CK</th><th>Tiến độ</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-strong">Doanh thu</td><td class="num">52.34 tỷ</td><td class="num">46.50 tỷ</td><td class="num cell-green">112.6%</td><td class="num"><span class="pill green">+12.5%</span></td><td class="num">48.38 tỷ</td><td class="num"><span class="pill green">+8.2%</span></td><td><div class="progress-bar" style="width:120px"><div class="progress-fill green" style="width:100%"></div></div></td></tr>
+              <tr><td class="cell-strong">Đơn hàng</td><td class="num">56.890</td><td class="num">52.000</td><td class="num cell-green">109.4%</td><td class="num"><span class="pill green">+9.4%</span></td><td class="num">52.420</td><td class="num"><span class="pill green">+8.5%</span></td><td><div class="progress-bar" style="width:120px"><div class="progress-fill green" style="width:100%"></div></div></td></tr>
+              <tr><td class="cell-strong">Sản phẩm</td><td class="num">132.450</td><td class="num">125.000</td><td class="num cell-green">105.9%</td><td class="num"><span class="pill green">+5.9%</span></td><td class="num">122.100</td><td class="num"><span class="pill green">+8.5%</span></td><td><div class="progress-bar" style="width:120px"><div class="progress-fill green" style="width:100%"></div></div></td></tr>
+              <tr><td class="cell-strong">Traffic</td><td class="num">142.580</td><td class="num">135.000</td><td class="num cell-green">105.6%</td><td class="num"><span class="pill green">+5.8%</span></td><td class="num">124.800</td><td class="num"><span class="pill green">+14.2%</span></td><td><div class="progress-bar" style="width:120px"><div class="progress-fill green" style="width:100%"></div></div></td></tr>
+              <tr><td class="cell-strong">ATV</td><td class="num">920K</td><td class="num">895K</td><td class="num cell-amber">102.8%</td><td class="num"><span class="pill green">+4.2%</span></td><td class="num">864K</td><td class="num"><span class="pill green">+6.5%</span></td><td><div class="progress-bar" style="width:120px"><div class="progress-fill" style="width:100%"></div></div></td></tr>
+              <tr><td class="cell-strong">UPT</td><td class="num">2.33</td><td class="num">2.40</td><td class="num cell-amber">97.1%</td><td class="num"><span class="pill amber">-2.9%</span></td><td class="num">2.33</td><td class="num"><span class="pill muted">0%</span></td><td><div class="progress-bar" style="width:120px"><div class="progress-fill" style="width:97%"></div></div></td></tr>
+              <tr><td class="cell-strong">CRV</td><td class="num">38.92%</td><td class="num">36.80%</td><td class="num cell-green">105.8%</td><td class="num"><span class="pill green">+2.1đ</span></td><td class="num">39.74%</td><td class="num"><span class="pill red">-0.8đ</span></td><td><div class="progress-bar" style="width:120px"><div class="progress-fill green" style="width:100%"></div></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- 2.2 Sales Trend ----- -->
+    <div class="section" id="section-sales-trend">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Xu hướng theo ngày</h1>
+          <p class="page-sub">Đường liền: Thực đạt · Đường đứt: Mục tiêu · 24 ngày T5/2026</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn">Xuất biểu đồ</button>
+        </div>
+      </div>
+
+      <div class="card chart-card">
+        <div class="chart-head"><div><p class="chart-title">Doanh thu theo ngày</p><p class="chart-sub">Thực đạt vs Mục tiêu · Tỷ VNĐ</p></div></div>
+        <div class="chart-wrap tall"><canvas id="ch_sales_revTrend"></canvas></div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 14px;">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Đơn hàng &amp; Traffic theo ngày</p><p class="chart-sub">Quy mô lượng khách và đơn</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_sales_orderTraffic"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">ATV &amp; UPT theo ngày</p><p class="chart-sub">Chất lượng đơn (giá trị TB &amp; số SP/đơn)</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_sales_atvUpt"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card chart-card" style="margin-top: 14px;">
+        <div class="chart-head"><div><p class="chart-title">CRV theo ngày</p><p class="chart-sub">Tỷ lệ chốt sale = Đơn / Traffic</p></div></div>
+        <div class="chart-wrap"><canvas id="ch_sales_crvTrend"></canvas></div>
+      </div>
+    </div>
+
+    <!-- ----- 2.3 Sales Daily Detail ----- -->
+    <div class="section" id="section-sales-daily">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Chi tiết tất cả chỉ số theo ngày</h1>
+          <p class="page-sub">Tổng hợp tất cả chi nhánh · Mới nhất → cũ nhất</p>
+        </div>
+      </div>
+
+      <div class="card chart-card">
+        <div class="table-scroll">
+          <table style="min-width:1100px">
+            <thead>
+              <tr>
+                <th rowspan="2" style="vertical-align:bottom">Ngày</th>
+                <th colspan="3" style="text-align:center; color:var(--blue)">Doanh thu</th>
+                <th colspan="3" style="text-align:center; color:var(--violet)">Đơn hàng</th>
+                <th colspan="3" style="text-align:center; color:var(--green)">Traffic</th>
+                <th colspan="3" style="text-align:center; color:var(--amber)">ATV</th>
+                <th colspan="3" style="text-align:center; color:var(--red)">CRV (%)</th>
+              </tr>
+              <tr>
+                <th class="num">Đạt</th><th class="num">MT</th><th class="num">%MT</th>
+                <th class="num">Đạt</th><th class="num">MT</th><th class="num">%MT</th>
+                <th class="num">Đạt</th><th class="num">MT</th><th class="num">%MT</th>
+                <th class="num">Đạt</th><th class="num">MT</th><th class="num">%MT</th>
+                <th class="num">Đạt</th><th class="num">MT</th><th class="num">%MT</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="cell-strong">24/05/2026</td><td class="num">2.45 tỷ</td><td class="num">2.10 tỷ</td><td class="num cell-green">116.7%</td><td class="num">2.680</td><td class="num">2.350</td><td class="num cell-green">114.0%</td><td class="num">6.420</td><td class="num">6.100</td><td class="num cell-green">105.2%</td><td class="num">914K</td><td class="num">893K</td><td class="num cell-amber">102.4%</td><td class="num">41.7%</td><td class="num">38.5%</td><td class="num cell-green">108.3%</td></tr>
+              <tr><td class="cell-strong">23/05/2026</td><td class="num">2.18 tỷ</td><td class="num">1.95 tỷ</td><td class="num cell-green">111.8%</td><td class="num">2.390</td><td class="num">2.180</td><td class="num cell-green">109.6%</td><td class="num">6.050</td><td class="num">5.720</td><td class="num cell-green">105.8%</td><td class="num">912K</td><td class="num">894K</td><td class="num cell-amber">102.0%</td><td class="num">39.5%</td><td class="num">38.1%</td><td class="num cell-green">103.7%</td></tr>
+              <tr><td class="cell-strong">22/05/2026</td><td class="num">2.05 tỷ</td><td class="num">1.90 tỷ</td><td class="num cell-amber">107.9%</td><td class="num">2.250</td><td class="num">2.120</td><td class="num cell-amber">106.1%</td><td class="num">5.890</td><td class="num">5.600</td><td class="num cell-amber">105.2%</td><td class="num">911K</td><td class="num">896K</td><td class="num cell-amber">101.7%</td><td class="num">38.2%</td><td class="num">37.9%</td><td class="num cell-amber">100.8%</td></tr>
+              <tr><td class="cell-strong">21/05/2026</td><td class="num">1.92 tỷ</td><td class="num">1.85 tỷ</td><td class="num cell-amber">103.8%</td><td class="num">2.110</td><td class="num">2.070</td><td class="num cell-amber">101.9%</td><td class="num">5.620</td><td class="num">5.480</td><td class="num cell-amber">102.6%</td><td class="num">910K</td><td class="num">894K</td><td class="num cell-amber">101.8%</td><td class="num">37.5%</td><td class="num">37.8%</td><td class="num cell-red">99.2%</td></tr>
+              <tr><td class="cell-strong">20/05/2026</td><td class="num">2.32 tỷ</td><td class="num">2.00 tỷ</td><td class="num cell-green">116.0%</td><td class="num">2.540</td><td class="num">2.230</td><td class="num cell-green">113.9%</td><td class="num">6.250</td><td class="num">5.900</td><td class="num cell-green">105.9%</td><td class="num">913K</td><td class="num">897K</td><td class="num cell-amber">101.8%</td><td class="num">40.6%</td><td class="num">37.8%</td><td class="num cell-green">107.4%</td></tr>
+              <tr><td class="cell-strong">19/05/2026</td><td class="num">2.12 tỷ</td><td class="num">1.95 tỷ</td><td class="num cell-amber">108.7%</td><td class="num">2.330</td><td class="num">2.180</td><td class="num cell-amber">106.9%</td><td class="num">5.940</td><td class="num">5.720</td><td class="num cell-amber">103.8%</td><td class="num">910K</td><td class="num">894K</td><td class="num cell-amber">101.8%</td><td class="num">39.2%</td><td class="num">38.1%</td><td class="num cell-amber">102.9%</td></tr>
+              <tr><td class="cell-strong">18/05/2026</td><td class="num">1.85 tỷ</td><td class="num">1.80 tỷ</td><td class="num cell-amber">102.8%</td><td class="num">2.030</td><td class="num">2.010</td><td class="num cell-amber">101.0%</td><td class="num">5.480</td><td class="num">5.380</td><td class="num cell-amber">101.9%</td><td class="num">911K</td><td class="num">896K</td><td class="num cell-amber">101.7%</td><td class="num">37.0%</td><td class="num">37.4%</td><td class="num cell-red">98.9%</td></tr>
+              <tr><td class="cell-strong">17/05/2026</td><td class="num">2.05 tỷ</td><td class="num">1.90 tỷ</td><td class="num cell-amber">107.9%</td><td class="num">2.250</td><td class="num">2.120</td><td class="num cell-amber">106.1%</td><td class="num">5.890</td><td class="num">5.600</td><td class="num cell-amber">105.2%</td><td class="num">911K</td><td class="num">896K</td><td class="num cell-amber">101.7%</td><td class="num">38.2%</td><td class="num">37.9%</td><td class="num cell-amber">100.8%</td></tr>
+              <tr><td colspan="16" style="text-align:center; padding:14px; color:var(--muted); font-size:11.5px;">… và 16 ngày khác (xem thêm trang 2/3)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- 2.4 Sales Branches Top/Bottom ----- -->
+    <div class="section" id="section-sales-branches">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Top &amp; Bottom 5 chi nhánh</h1>
+          <p class="page-sub">5 chi nhánh dẫn đầu vs 5 chi nhánh thấp nhất theo doanh thu</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">🏆 5 chi nhánh dẫn đầu</p><p class="chart-sub">Doanh thu cao nhất T5/2026</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_sales_top5"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">⚠ 5 chi nhánh thấp nhất</p><p class="chart-sub">Cần hỗ trợ &amp; review chiến lược</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_sales_bot5"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card table-card" style="margin-top:14px;">
+        <div class="table-head"><p class="chart-title">Bảng so sánh chi nhánh</p></div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Chi nhánh</th><th>Vùng</th><th class="num">Doanh thu</th><th class="num">% MT</th><th class="num">Traffic</th><th class="num">ATV</th><th class="num">CRV</th><th>Xếp loại</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-strong">Q1 Lê Lai</td><td>HCM</td><td class="num cell-amber">4.85 tỷ</td><td class="num cell-green">125%</td><td class="num">11.250</td><td class="num">948K</td><td class="num cell-green">45.4%</td><td><span class="pill green">Top 1</span></td></tr>
+              <tr><td class="cell-strong">Q7 Phú Mỹ Hưng</td><td>HCM</td><td class="num cell-amber">4.12 tỷ</td><td class="num cell-green">118%</td><td class="num">9.850</td><td class="num">935K</td><td class="num cell-green">44.7%</td><td><span class="pill green">Top 2</span></td></tr>
+              <tr><td class="cell-strong">Vincom Đồng Khởi</td><td>HCM</td><td class="num cell-amber">3.78 tỷ</td><td class="num cell-green">115%</td><td class="num">8.940</td><td class="num">925K</td><td class="num cell-green">45.7%</td><td><span class="pill green">Top 3</span></td></tr>
+              <tr><td class="cell-strong">Crescent Mall Q7</td><td>HCM</td><td class="num">3.45 tỷ</td><td class="num cell-amber">112%</td><td class="num">8.250</td><td class="num">920K</td><td class="num cell-amber">45.4%</td><td><span class="pill amber">Top 4</span></td></tr>
+              <tr><td class="cell-strong">AEON Tân Phú</td><td>HCM</td><td class="num">3.18 tỷ</td><td class="num cell-amber">108%</td><td class="num">7.680</td><td class="num">918K</td><td class="num cell-amber">45.1%</td><td><span class="pill amber">Top 5</span></td></tr>
+              <tr><td colspan="8" style="text-align:center; padding:10px; color:var(--muted-2); font-size:11px;">…</td></tr>
+              <tr><td class="cell-strong">Đỗ Xuân Hợp Q9</td><td>HCM</td><td class="num cell-red">0.65 tỷ</td><td class="num cell-red">78%</td><td class="num">2.180</td><td class="num">812K</td><td class="num cell-red">36.7%</td><td><span class="pill red">Bot 5</span></td></tr>
+              <tr><td class="cell-strong">Quy Nhơn</td><td>Miền Trung</td><td class="num cell-red">0.58 tỷ</td><td class="num cell-red">72%</td><td class="num">1.950</td><td class="num">808K</td><td class="num cell-red">36.8%</td><td><span class="pill red">Bot 4</span></td></tr>
+              <tr><td class="cell-strong">Bến Cát</td><td>Bình Dương</td><td class="num cell-red">0.52 tỷ</td><td class="num cell-red">68%</td><td class="num">1.820</td><td class="num">805K</td><td class="num cell-red">35.7%</td><td><span class="pill red">Bot 3</span></td></tr>
+              <tr><td class="cell-strong">Cần Thơ</td><td>Miền Tây</td><td class="num cell-red">0.48 tỷ</td><td class="num cell-red">65%</td><td class="num">1.680</td><td class="num">800K</td><td class="num cell-red">35.7%</td><td><span class="pill red">Bot 2</span></td></tr>
+              <tr><td class="cell-strong">Hóc Môn</td><td>HCM</td><td class="num cell-red">0.42 tỷ</td><td class="num cell-red">62%</td><td class="num">1.520</td><td class="num">795K</td><td class="num cell-red">34.7%</td><td><span class="pill red">Bot 1</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- 2.5 Sales Branch Classification ----- -->
+    <div class="section" id="section-sales-classify">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Phân loại chi nhánh</h1>
+          <p class="page-sub">Ma trận 2×2 phân loại theo doanh thu &amp; tăng trưởng</p>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="card"><p class="card-title">Vô địch</p><div class="card-value green">12</div><div class="card-sub">DT cao · Tăng trưởng cao</div></div>
+        <div class="card"><p class="card-title">Tiềm năng</p><div class="card-value amber">10</div><div class="card-sub">DT trung · Tăng trưởng cao</div></div>
+        <div class="card"><p class="card-title">Bò sữa</p><div class="card-value">9</div><div class="card-sub">DT cao · Tăng trưởng thấp</div></div>
+        <div class="card"><p class="card-title">Vấn đề</p><div class="card-value red">8</div><div class="card-sub">DT thấp · Tăng trưởng thấp</div></div>
+      </div>
+
+      <div class="card chart-card" style="margin-top:14px;">
+        <div class="chart-head"><div><p class="chart-title">Ma trận chi nhánh · Doanh thu (X) vs Tăng trưởng (Y)</p><p class="chart-sub">39 cửa hàng được phân thành 4 nhóm chiến lược</p></div></div>
+        <div class="chart-wrap taller"><canvas id="ch_sales_matrix"></canvas></div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-icon">◆</div>
+        <div class="insight-title">Đề xuất hành động theo nhóm chi nhánh</div>
+        <div class="insight-text">
+          <strong>Nhóm Vô địch (12 CN):</strong> Q1 Lê Lai, Q7 PMH, Vincom Đồng Khởi... Duy trì ngân sách Ads, mở rộng sang sản phẩm cao cấp, dùng làm pilot test cho campaign mới.<br>
+          <strong>Nhóm Tiềm năng (10 CN):</strong> Tăng ngân sách marketing 30-50% trong 3 tháng tới, theo dõi sát ROAS, target ưu tiên T6-T8.<br>
+          <strong>Nhóm Bò sữa (9 CN):</strong> Giữ nguyên hoặc giảm nhẹ ngân sách, tập trung tối ưu vận hành để giảm chi phí.<br>
+          <strong>Nhóm Vấn đề (8 CN):</strong> Cắt 50% ngân sách Ads, review nhân sự &amp; chiến lược, đánh giá có nên đóng cửa sau Q3 không.
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================== -->
+    <!-- ============= GROUP 3 · DIGITAL ANALYTICS ============= -->
+    <!-- ====================================================== -->
+
+    <!-- ----- 3.1 Digital Overview ----- -->
+    <div class="section" id="section-dig-overview">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Digital Performance Overview</h1>
+          <p class="page-sub">Bức tranh toàn cảnh hệ thống 42 fanpage + 39 cửa hàng có Ads · T1-T5/2026</p>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="card"><p class="card-title">Chi phí Ads</p><div class="card-value">1.46 tỷ</div><span class="card-trend down">↑ 29.2% YoY</span></div>
+        <div class="card"><p class="card-title">DT Tổng cửa hàng</p><div class="card-value amber">61.05 tỷ</div><span class="card-trend up">↑ 24.7% YoY</span></div>
+        <div class="card"><p class="card-title">Tỷ trọng Ads/Tổng</p><div class="card-value">14.9%</div><span class="card-trend up">↑ 1.6đ</span></div>
+        <div class="card"><p class="card-title">ROAS</p><div class="card-value amber">6.22x</div><span class="card-trend up">↑ 8.2%</span></div>
+      </div>
+
+      <div class="kpi-grid" style="margin-top:14px;">
+        <div class="card"><p class="card-title">Tổng bài Fanpage</p><div class="card-value">8.423</div><span class="card-trend neutral">42 page hoạt động</span></div>
+        <div class="card"><p class="card-title">Lượt xem</p><div class="card-value">17.56M</div><span class="card-trend neutral">2.085 view/bài</span></div>
+        <div class="card"><p class="card-title">ER (Tương tác)</p><div class="card-value green">20.55%</div><span class="card-trend up">Gấp 3 lần 2025</span></div>
+        <div class="card"><p class="card-title">Tin organic</p><div class="card-value">1.849</div><span class="card-trend neutral">26.7% tổng tin</span></div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 14px;">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Hiệu suất Ads theo tháng</p><p class="chart-sub">ROAS đang giảm rõ rệt từ T3 - cảnh báo đỏ ở T5</p></div><span class="pill amber">Cảnh báo</span></div>
+          <div class="chart-wrap"><canvas id="ch_dig_monthlyRoas"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Phân bổ doanh thu</p><p class="chart-sub">Ads chỉ chiếm 14.9% - walk-in là chủ lực</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_dig_revPie"></canvas></div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 14px;">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Hoạt động Fanpage 5 tháng</p><p class="chart-sub">T5 đang hồi phục sau khi T4 chạm đáy</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_dig_fbMonthly"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Top 5 cửa hàng doanh thu</p><p class="chart-sub">Tổng doanh thu T1-T5/2026 (triệu đồng)</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_dig_top5"></canvas></div>
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-icon">✦</div>
+        <div class="insight-title">Góc nhìn của Digital Team</div>
+        <div class="insight-text">ROAS hệ thống 6.22x ở mức tốt cho thời trang offline, doanh thu tăng <strong>+24.7%</strong> so cùng kỳ 2025 và ER Fanpage gấp 3 lần năm trước. Tuy nhiên có 2 cảnh báo lớn cần lưu ý: <strong>CPL tăng 35%</strong> (49K → 66K) và <strong>T4-T5 hiệu suất Ads giảm mạnh</strong> (ROAS từ 9 xuống 2.2). Ads chỉ đóng góp 14.9% doanh thu - 85% còn lại từ walk-in và khách quen, vì vậy cần đánh giá Ads ở đóng góp biên thay vì coi là kênh chính. <strong>Hành động tiếp theo:</strong> tái phân bổ ngân sách từ nhóm Q4 (thảm họa) sang nhóm Q1 (vô địch) để nâng ROAS hệ thống lên 8-10.</div>
+      </div>
+    </div>
+
+    <!-- ----- 3.2 Ads KPI & YoY ----- -->
+    <div class="section" id="section-dig-ads-kpi">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">KPI Ads Offline &amp; So sánh YoY</h1>
+          <p class="page-sub">8 chỉ số cốt lõi + xu hướng 2025 vs 2026</p>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="card"><p class="card-title">Tổng Lead</p><div class="card-value">22.009</div><span class="card-trend down">↓ 4.2% YoY</span></div>
+        <div class="card"><p class="card-title">CPL</p><div class="card-value red">66.460đ</div><span class="card-trend down">↑ 34.9% YoY</span></div>
+        <div class="card"><p class="card-title">CPM</p><div class="card-value green">15.084đ</div><span class="card-trend up">↓ 6.8% YoY</span></div>
+        <div class="card"><p class="card-title">CPC Offline</p><div class="card-value red">170.400đ</div><span class="card-trend down">↑ 46.1% YoY</span></div>
+      </div>
+
+      <div class="kpi-grid" style="margin-top:14px;">
+        <div class="card"><p class="card-title">ER</p><div class="card-value green">20.55%</div><span class="card-trend up">↑ 13.5đ vs 2025</span></div>
+        <div class="card"><p class="card-title">DT Ads</p><div class="card-value amber">9.10 tỷ</div><span class="card-trend up">↑ 39.8% YoY</span></div>
+        <div class="card"><p class="card-title">AOV cửa hàng</p><div class="card-value amber">961K</div><span class="card-trend up">↑ 48% YoY</span></div>
+        <div class="card"><p class="card-title">Đơn Ads</p><div class="card-value">8.547</div><span class="card-trend neutral">3.3% tổng đơn</span></div>
+      </div>
+
+      <div class="grid-2" style="margin-top:14px;">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">So sánh cùng kỳ 2025 vs 2026</p><p class="chart-sub">11 chỉ số T1-T5</p></div></div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Chỉ số</th><th class="num">2025</th><th class="num">2026</th><th class="num">Chênh lệch</th></tr></thead>
+              <tbody>
+                <tr><td>Chi phí Ads</td><td class="num">1.13 tỷ</td><td class="num">1.46 tỷ</td><td class="num"><span class="pill amber">+29.2%</span></td></tr>
+                <tr><td>DT tổng cửa hàng</td><td class="num">48.97 tỷ</td><td class="num">61.05 tỷ</td><td class="num"><span class="pill green">+24.7%</span></td></tr>
+                <tr><td>DT Ads</td><td class="num">6.51 tỷ</td><td class="num">9.10 tỷ</td><td class="num"><span class="pill green">+39.8%</span></td></tr>
+                <tr><td>Tỷ trọng Ads/Tổng</td><td class="num">13.3%</td><td class="num">14.9%</td><td class="num"><span class="pill green">+1.6đ</span></td></tr>
+                <tr><td>Lead</td><td class="num">22.978</td><td class="num">22.009</td><td class="num"><span class="pill amber">-4.2%</span></td></tr>
+                <tr><td>CPL</td><td class="num">49.266đ</td><td class="num">66.460đ</td><td class="num"><span class="pill red">+34.9%</span></td></tr>
+                <tr><td>CPM</td><td class="num">16.186đ</td><td class="num">15.084đ</td><td class="num"><span class="pill green">-6.8%</span></td></tr>
+                <tr><td>ER</td><td class="num">7.10%</td><td class="num">20.55%</td><td class="num"><span class="pill green">+13.5đ</span></td></tr>
+                <tr><td>ROAS</td><td class="num">5.75x</td><td class="num">6.22x</td><td class="num"><span class="pill green">+8.2%</span></td></tr>
+                <tr><td>CPC Offline</td><td class="num">116.657đ</td><td class="num">170.400đ</td><td class="num"><span class="pill red">+46.1%</span></td></tr>
+                <tr><td>AOV cửa hàng</td><td class="num">649K</td><td class="num">961K</td><td class="num"><span class="pill green">+48.0%</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Biểu đồ so sánh YoY</p><p class="chart-sub">% chênh lệch các chỉ số chính</p></div></div>
+          <div class="chart-wrap taller"><canvas id="ch_dig_yoy"></canvas></div>
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-icon">◆</div>
+        <div class="insight-title">Đánh giá xu hướng năm 2026</div>
+        <div class="insight-text">
+          <strong>Tin tốt:</strong> Doanh thu tổng tăng +24.7%, DT Ads tăng +39.8% (nhanh hơn DT tổng - Ads đang đóng góp nhiều hơn). ER tăng từ 7.1% lên 20.55% - <strong>gấp 3 lần</strong>. AOV cửa hàng tăng +48% lên 961K.<br><br>
+          <strong>Tin lo:</strong> CPL tăng 35% (49K → 66K) - cùng số lead nhưng chi nhiều hơn. <strong>CPC offline tăng 46% lên 170K</strong> - Facebook Ads đang đắt hơn hoặc tỷ lệ chốt sale từ lead đang kém đi.<br><br>
+          <strong>Định hướng:</strong> Tận dụng ER cao bằng creative hướng chuyển đổi (lead form, messaging-first). Siết quy trình chốt sale tại cửa hàng để hạ CPC offline về dưới 130K.
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- 3.3 Ads Monthly ----- -->
+    <div class="section" id="section-dig-ads-monthly">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Hiệu suất Ads theo tháng</h1>
+          <p class="page-sub">Phân tích T1-T5, đánh giá T4-T5 đẩy ngân sách</p>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="card"><p class="card-title">T1/2026 · ROAS</p><div class="card-value green">9.33x</div><div class="card-sub">CPL 53.868đ</div></div>
+        <div class="card"><p class="card-title">T3/2026 · ROAS</p><div class="card-value amber">4.72x</div><div class="card-sub">CPL 57.736đ</div></div>
+        <div class="card"><p class="card-title">T4/2026 · ROAS</p><div class="card-value red">2.84x</div><div class="card-sub">CPL 78.450đ</div></div>
+        <div class="card"><p class="card-title">T5/2026 · ROAS</p><div class="card-value red">2.21x</div><div class="card-sub">CPL 89.120đ</div></div>
+      </div>
+
+      <div class="card chart-card" style="margin-top:14px;">
+        <div class="chart-head"><div><p class="chart-title">Diễn biến 5 tháng · ROAS &amp; Chi phí Ads</p><p class="chart-sub">ROAS giảm dần khi tăng ngân sách - dấu hiệu ad fatigue</p></div></div>
+        <div class="chart-wrap tall"><canvas id="ch_dig_monthlyDual"></canvas></div>
+      </div>
+
+      <div class="grid-2" style="margin-top:14px;">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">CPL &amp; CPM theo tháng</p><p class="chart-sub">Chi phí đầu vào tăng dần</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_dig_cplCpm"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Số Lead theo tháng</p><p class="chart-sub">Lead T4-T5 đang ổn định</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_dig_leadMonthly"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- 3.4 Ads Stores ----- -->
+    <div class="section" id="section-dig-ads-stores">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Hiệu suất cửa hàng Ads</h1>
+          <p class="page-sub">Top 10 doanh thu · Top &amp; Bottom ROAS</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Top 10 cửa hàng · Doanh thu Ads</p><p class="chart-sub">39 CH có Ads · Top 10 đóng góp 58%</p></div></div>
+          <div class="chart-wrap tall"><canvas id="ch_dig_storeRev"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Top 5 ROAS cao nhất</p><p class="chart-sub">Cửa hàng "vô địch" về hiệu quả Ads</p></div></div>
+          <div class="chart-wrap tall"><canvas id="ch_dig_topRoas"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card table-card" style="margin-top:14px;">
+        <div class="table-head"><p class="chart-title">Chi tiết hiệu suất 39 cửa hàng có Ads</p></div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Cửa hàng</th><th class="num">Chi phí Ads</th><th class="num">Lead</th><th class="num">CPL</th><th class="num">DT Ads</th><th class="num">ROAS</th><th>Xếp loại</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-strong">Q1 Lê Lai</td><td class="num">58.4M</td><td class="num">1.245</td><td class="num">46.9K</td><td class="num cell-amber">680M</td><td class="num cell-green">11.6x</td><td><span class="pill green">Vô địch</span></td></tr>
+              <tr><td class="cell-strong">Q7 Phú Mỹ Hưng</td><td class="num">52.1M</td><td class="num">1.108</td><td class="num">47.0K</td><td class="num cell-amber">595M</td><td class="num cell-green">11.4x</td><td><span class="pill green">Vô địch</span></td></tr>
+              <tr><td class="cell-strong">Vincom Đồng Khởi</td><td class="num">48.6M</td><td class="num">980</td><td class="num">49.6K</td><td class="num cell-amber">512M</td><td class="num cell-green">10.5x</td><td><span class="pill green">Vô địch</span></td></tr>
+              <tr><td class="cell-strong">Crescent Mall Q7</td><td class="num">42.3M</td><td class="num">855</td><td class="num">49.5K</td><td class="num">425M</td><td class="num cell-amber">10.1x</td><td><span class="pill amber">Tiềm năng</span></td></tr>
+              <tr><td class="cell-strong">Bình Thạnh</td><td class="num">38.5M</td><td class="num">780</td><td class="num">49.4K</td><td class="num">385M</td><td class="num cell-amber">10.0x</td><td><span class="pill amber">Tiềm năng</span></td></tr>
+              <tr><td colspan="7" style="text-align:center; padding:10px; color:var(--muted-2); font-size:11px;">…</td></tr>
+              <tr><td class="cell-strong">Đỗ Xuân Hợp Q9</td><td class="num">28.5M</td><td class="num">520</td><td class="num">54.8K</td><td class="num cell-red">85M</td><td class="num cell-red">2.98x</td><td><span class="pill red">Vấn đề</span></td></tr>
+              <tr><td class="cell-strong">Hóc Môn</td><td class="num">32.1M</td><td class="num">485</td><td class="num">66.2K</td><td class="num cell-red">72M</td><td class="num cell-red">2.24x</td><td><span class="pill red">Thảm họa</span></td></tr>
+              <tr><td class="cell-strong">Bến Cát</td><td class="num">25.8M</td><td class="num">380</td><td class="num">67.9K</td><td class="num cell-red">58M</td><td class="num cell-red">2.25x</td><td><span class="pill red">Thảm họa</span></td></tr>
+              <tr><td class="cell-strong">Quy Nhơn</td><td class="num">22.5M</td><td class="num">320</td><td class="num">70.3K</td><td class="num cell-red">48M</td><td class="num cell-red">2.13x</td><td><span class="pill red">Thảm họa</span></td></tr>
+              <tr><td class="cell-strong">Cần Thơ</td><td class="num">21.2M</td><td class="num">295</td><td class="num">71.9K</td><td class="num cell-red">42M</td><td class="num cell-red">1.98x</td><td><span class="pill red">Thảm họa</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- 3.5 Ads Matrix ----- -->
+    <div class="section" id="section-dig-ads-matrix">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Ma trận chiến lược 2×2</h1>
+          <p class="page-sub">Phân loại 39 cửa hàng thành 4 nhóm chiến lược</p>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="card"><p class="card-title">Q1 · Vô địch</p><div class="card-value green">12</div><div class="card-sub">ROAS cao · DT cao</div></div>
+        <div class="card"><p class="card-title">Q2 · Tiềm năng</p><div class="card-value amber">10</div><div class="card-sub">ROAS cao · DT thấp</div></div>
+        <div class="card"><p class="card-title">Q3 · Bò sữa</p><div class="card-value">9</div><div class="card-sub">ROAS thấp · DT cao</div></div>
+        <div class="card"><p class="card-title">Q4 · Thảm họa</p><div class="card-value red">8</div><div class="card-sub">ROAS thấp · DT thấp</div></div>
+      </div>
+
+      <div class="card chart-card" style="margin-top:14px;">
+        <div class="chart-head"><div><p class="chart-title">Ma trận ROAS vs Doanh thu Ads</p><p class="chart-sub">Bubble size = Chi phí Ads · 39 cửa hàng</p></div></div>
+        <div class="chart-wrap taller"><canvas id="ch_dig_matrix"></canvas></div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-icon">◇</div>
+        <div class="insight-title">Đề xuất tái phân bổ ngân sách 2026</div>
+        <div class="insight-text">
+          <strong>Q1 Vô địch (12 CH):</strong> Tăng ngân sách +30% (200tr → 260tr). Đây là nhóm ROAS cao và DT cao, có khả năng scale.<br>
+          <strong>Q2 Tiềm năng (10 CH):</strong> Tăng ngân sách +50% (120tr → 180tr). ROAS đang cao nhưng quy mô nhỏ - có dư địa tăng trưởng.<br>
+          <strong>Q3 Bò sữa (9 CH):</strong> Giữ nguyên ngân sách, tập trung tối ưu creative để đẩy ROAS lên.<br>
+          <strong>Q4 Thảm họa (8 CH):</strong> Cắt 70% ngân sách Ads (320tr → 95tr) - chuyển sang walk-in marketing offline. Sau Q3 đánh giá lại để quyết định có tiếp tục Ads hay không.
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- 3.6 Fanpage Overview ----- -->
+    <div class="section" id="section-dig-fb-overview">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Tổng quan Fanpage &amp; theo tháng</h1>
+          <p class="page-sub">8.423 bài đăng trên 42 fanpage · hiệu suất T1-T5</p>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="card"><p class="card-title">Tổng bài đăng</p><div class="card-value">8.423</div><div class="card-sub">42 fanpage</div></div>
+        <div class="card"><p class="card-title">Lượt xem</p><div class="card-value">17.56M</div><div class="card-sub">2.085 view/bài</div></div>
+        <div class="card"><p class="card-title">Tương tác</p><div class="card-value amber">3.61M</div><div class="card-sub">428 tương tác/bài</div></div>
+        <div class="card"><p class="card-title">ER trung bình</p><div class="card-value green">20.55%</div><div class="card-sub">Gấp 3 lần 2025</div></div>
+      </div>
+
+      <div class="grid-2" style="margin-top:14px;">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Bài đăng theo tháng</p><p class="chart-sub">T4 chạm đáy · T5 phục hồi</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_dig_fbPostMonth"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Lượt xem &amp; tương tác theo tháng</p><p class="chart-sub">Diễn biến reach + engagement</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_dig_fbViewMonth"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- 3.7 FB Growth ----- -->
+    <div class="section" id="section-dig-fb-growth">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Cửa hàng tăng trưởng T4-T5</h1>
+          <p class="page-sub">Top 3 bứt phá: Hóc Môn, Biên Hoà, Đỗ Xuân Hợp Q9</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <p class="card-title">🥇 Hóc Môn</p>
+          <div class="card-value amber">+285%</div>
+          <div class="card-sub">Tương tác T4 → T5</div>
+          <div style="margin-top:10px; font-size:11.5px; color:var(--muted); line-height:1.6;">
+            <strong style="color:var(--ink-2)">Trước:</strong> 124 tương tác/bài<br>
+            <strong style="color:var(--ink-2)">Sau:</strong> 477 tương tác/bài
+          </div>
+        </div>
+        <div class="card">
+          <p class="card-title">🥈 Biên Hoà</p>
+          <div class="card-value amber">+218%</div>
+          <div class="card-sub">Tương tác T4 → T5</div>
+          <div style="margin-top:10px; font-size:11.5px; color:var(--muted); line-height:1.6;">
+            <strong style="color:var(--ink-2)">Trước:</strong> 156 tương tác/bài<br>
+            <strong style="color:var(--ink-2)">Sau:</strong> 496 tương tác/bài
+          </div>
+        </div>
+        <div class="card">
+          <p class="card-title">🥉 Đỗ Xuân Hợp Q9</p>
+          <div class="card-value amber">+185%</div>
+          <div class="card-sub">Tương tác T4 → T5</div>
+          <div style="margin-top:10px; font-size:11.5px; color:var(--muted); line-height:1.6;">
+            <strong style="color:var(--ink-2)">Trước:</strong> 180 tương tác/bài<br>
+            <strong style="color:var(--ink-2)">Sau:</strong> 513 tương tác/bài
+          </div>
+        </div>
+      </div>
+
+      <div class="card chart-card" style="margin-top:14px;">
+        <div class="chart-head"><div><p class="chart-title">So sánh tương tác T4 vs T5</p><p class="chart-sub">Top 10 fanpage tăng trưởng mạnh nhất</p></div></div>
+        <div class="chart-wrap tall"><canvas id="ch_dig_growth"></canvas></div>
+      </div>
+    </div>
+
+    <!-- ----- 3.8 FB Content ----- -->
+    <div class="section" id="section-dig-fb-content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Top 10 nội dung viral &amp; organic</h1>
+          <p class="page-sub">Bài viết có tương tác cao nhất + bài organic hiệu quả</p>
+        </div>
+      </div>
+
+      <div class="card table-card">
+        <div class="table-head"><p class="chart-title">Top 10 bài viết viral T5/2026</p></div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Fanpage</th><th>Bài viết</th><th>Loại</th><th class="num">Reach</th><th class="num">Tương tác</th><th class="num">ER</th><th class="num">Đến CH</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-strong">Hóc Môn</td><td>Set váy hoa nhỡ chào hè 2026</td><td><span class="pill blue">Video</span></td><td class="num">285K</td><td class="num cell-amber">42.5K</td><td class="num cell-green">14.9%</td><td class="num">182</td></tr>
+              <tr><td class="cell-strong">Biên Hoà</td><td>Sale 50% tất cả các mẫu mới</td><td><span class="pill amber">Ảnh</span></td><td class="num">258K</td><td class="num cell-amber">38.2K</td><td class="num cell-green">14.8%</td><td class="num">165</td></tr>
+              <tr><td class="cell-strong">Q1 Lê Lai</td><td>Bộ sưu tập đầm dạ tiệc cao cấp</td><td><span class="pill blue">Video</span></td><td class="num">245K</td><td class="num">32.8K</td><td class="num cell-green">13.4%</td><td class="num">148</td></tr>
+              <tr><td class="cell-strong">Q9</td><td>Tin nhắn cảm ơn khách quen</td><td><span class="pill muted">Văn bản</span></td><td class="num">120K</td><td class="num">28.5K</td><td class="num cell-green">23.8%</td><td class="num">95</td></tr>
+              <tr><td class="cell-strong">Quang Trung GV</td><td>Look book mùa hè</td><td><span class="pill amber">Ảnh</span></td><td class="num">198K</td><td class="num">26.4K</td><td class="num cell-green">13.3%</td><td class="num">112</td></tr>
+              <tr><td class="cell-strong">AEON Tân Phú</td><td>Phối đồ đi làm 5 ngày</td><td><span class="pill blue">Video</span></td><td class="num">185K</td><td class="num">24.8K</td><td class="num cell-green">13.4%</td><td class="num">98</td></tr>
+              <tr><td class="cell-strong">Bình Thạnh</td><td>Khai trương cửa hàng mới</td><td><span class="pill amber">Ảnh</span></td><td class="num">175K</td><td class="num">22.5K</td><td class="num cell-green">12.9%</td><td class="num">142</td></tr>
+              <tr><td class="cell-strong">Q7 PMH</td><td>Review từ khách hàng VIP</td><td><span class="pill blue">Video</span></td><td class="num">162K</td><td class="num">20.8K</td><td class="num cell-green">12.8%</td><td class="num">88</td></tr>
+              <tr><td class="cell-strong">Cần Thơ</td><td>Mẹo phối đồ cho mom</td><td><span class="pill amber">Ảnh</span></td><td class="num">148K</td><td class="num">18.9K</td><td class="num cell-green">12.8%</td><td class="num">75</td></tr>
+              <tr><td class="cell-strong">Vũng Tàu</td><td>Đầm đi biển 2026</td><td><span class="pill blue">Video</span></td><td class="num">142K</td><td class="num">17.5K</td><td class="num cell-green">12.3%</td><td class="num">68</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:14px;">
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">Tỷ trọng loại bài</p><p class="chart-sub">Ảnh · Video · Văn bản</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_dig_contentType"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><div><p class="chart-title">ER theo loại bài</p><p class="chart-sub">Loại nào hiệu quả nhất</p></div></div>
+          <div class="chart-wrap"><canvas id="ch_dig_erType"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- 3.9 FB Weak ----- -->
+    <div class="section" id="section-dig-fb-weak">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Top 10 Fanpage yếu kém</h1>
+          <p class="page-sub">3 nhóm vấn đề + Đăng nhiều có hiệu quả không?</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <p class="card-title">🛑 Đăng nhiều · ER thấp</p>
+          <div class="card-value red">5 page</div>
+          <div class="card-sub">Tốn công sức, ít kết quả</div>
+        </div>
+        <div class="card">
+          <p class="card-title">😴 Đăng ít · Tương tác thấp</p>
+          <div class="card-value amber">3 page</div>
+          <div class="card-sub">Cần ramp up tần suất</div>
+        </div>
+        <div class="card">
+          <p class="card-title">📉 Giảm tương tác T5</p>
+          <div class="card-value amber">2 page</div>
+          <div class="card-sub">Cần thay đổi content</div>
+        </div>
+      </div>
+
+      <div class="card chart-card" style="margin-top:14px;">
+        <div class="chart-head"><div><p class="chart-title">Tương quan: Tần suất đăng vs ER trung bình</p><p class="chart-sub">Đăng nhiều không đồng nghĩa hiệu quả cao</p></div></div>
+        <div class="chart-wrap tall"><canvas id="ch_dig_postVsEr"></canvas></div>
+      </div>
+
+      <div class="card table-card" style="margin-top:14px;">
+        <div class="table-head"><p class="chart-title">10 fanpage yếu nhất theo ER</p></div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Fanpage</th><th class="num">Số bài</th><th class="num">Lượt xem TB</th><th class="num">ER</th><th>Vấn đề chính</th><th>Đề xuất</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-strong">Long Xuyên</td><td class="num">285</td><td class="num">680</td><td class="num cell-red">3.2%</td><td>Đăng nhiều, ER thấp</td><td>Giảm bài, tập trung chất lượng</td></tr>
+              <tr><td class="cell-strong">Vũng Tàu Nam</td><td class="num">258</td><td class="num">720</td><td class="num cell-red">3.5%</td><td>Đăng nhiều, ER thấp</td><td>A/B test content</td></tr>
+              <tr><td class="cell-strong">Phan Thiết</td><td class="num">232</td><td class="num">780</td><td class="num cell-red">3.8%</td><td>Đăng nhiều, ER thấp</td><td>Đổi hướng creative</td></tr>
+              <tr><td class="cell-strong">Tây Ninh</td><td class="num">62</td><td class="num">580</td><td class="num cell-amber">4.1%</td><td>Đăng quá ít</td><td>Tăng tần suất 2-3 bài/ngày</td></tr>
+              <tr><td class="cell-strong">Trà Vinh</td><td class="num">75</td><td class="num">620</td><td class="num cell-amber">4.3%</td><td>Đăng quá ít</td><td>Lên schedule đăng đều</td></tr>
+              <tr><td class="cell-strong">Bến Tre</td><td class="num">88</td><td class="num">640</td><td class="num cell-amber">4.5%</td><td>Đăng quá ít</td><td>Phân bổ ngày trong tuần</td></tr>
+              <tr><td class="cell-strong">Cao Lãnh</td><td class="num">142</td><td class="num">920</td><td class="num cell-amber">4.8%</td><td>Giảm tương tác T5</td><td>Phân tích content T4 vs T5</td></tr>
+              <tr><td class="cell-strong">Bạc Liêu</td><td class="num">156</td><td class="num">850</td><td class="num cell-amber">5.1%</td><td>Giảm tương tác T5</td><td>Lấy creative từ Q1 Lê Lai</td></tr>
+              <tr><td class="cell-strong">Vĩnh Long</td><td class="num">198</td><td class="num">880</td><td class="num cell-amber">5.4%</td><td>Trung bình</td><td>Thử Reels + Story</td></tr>
+              <tr><td class="cell-strong">Cà Mau</td><td class="num">175</td><td class="num">820</td><td class="num cell-amber">5.6%</td><td>Trung bình</td><td>Tham khảo Hóc Môn</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ----- 3.10 Action Plan T6 ----- -->
+    <div class="section" id="section-dig-action">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Action Plan tháng 6/2026</h1>
+          <p class="page-sub">4 hướng đi cho T6 · phân nhóm và xử lý theo độ ưu tiên</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card" style="border-left: 3px solid var(--green); padding: 20px;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            <div style="width:32px; height:32px; border-radius:8px; background: rgba(95,212,154,0.15); color:var(--green); display:grid; place-items:center; font-weight:800;">1</div>
+            <div>
+              <p class="card-title" style="margin:0">Scale nhóm vô địch</p>
+              <p style="font-size:11.5px; color:var(--green); margin:3px 0 0 0; font-weight:600;">Ưu tiên cao · Impact lớn</p>
+            </div>
+          </div>
+          <p style="font-size:12.5px; color:var(--muted); line-height:1.7; margin:8px 0 0 0;">
+            <strong style="color:var(--ink-2)">Đối tượng:</strong> 12 CH vô địch (Q1 Lê Lai, Q7 PMH, Vincom ĐK...).<br>
+            <strong style="color:var(--ink-2)">Hành động:</strong> Tăng ngân sách Ads +30%, copy creative top 10 viral sang các page khác, mở rộng sang TikTok Ads.<br>
+            <strong style="color:var(--ink-2)">KPI T6:</strong> ROAS ≥ 10x, DT Ads ≥ 12 tỷ.
+          </p>
+        </div>
+
+        <div class="card" style="border-left: 3px solid var(--amber); padding: 20px;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            <div style="width:32px; height:32px; border-radius:8px; background: rgba(245,181,68,0.15); color:var(--amber); display:grid; place-items:center; font-weight:800;">2</div>
+            <div>
+              <p class="card-title" style="margin:0">Boost nhóm tiềm năng</p>
+              <p style="font-size:11.5px; color:var(--amber); margin:3px 0 0 0; font-weight:600;">Ưu tiên cao · ROI dài hạn</p>
+            </div>
+          </div>
+          <p style="font-size:12.5px; color:var(--muted); line-height:1.7; margin:8px 0 0 0;">
+            <strong style="color:var(--ink-2)">Đối tượng:</strong> 10 CH tiềm năng (ROAS cao, DT chưa lớn).<br>
+            <strong style="color:var(--ink-2)">Hành động:</strong> Tăng ngân sách +50%, training nhân viên chốt sale, lên content riêng cho từng CH.<br>
+            <strong style="color:var(--ink-2)">KPI T6:</strong> 5/10 CH lên nhóm vô địch trong Q3.
+          </p>
+        </div>
+
+        <div class="card" style="border-left: 3px solid var(--blue); padding: 20px;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            <div style="width:32px; height:32px; border-radius:8px; background: rgba(107,163,255,0.15); color:var(--blue); display:grid; place-items:center; font-weight:800;">3</div>
+            <div>
+              <p class="card-title" style="margin:0">Tối ưu nhóm bò sữa</p>
+              <p style="font-size:11.5px; color:var(--blue); margin:3px 0 0 0; font-weight:600;">Trung bình · Cost saving</p>
+            </div>
+          </div>
+          <p style="font-size:12.5px; color:var(--muted); line-height:1.7; margin:8px 0 0 0;">
+            <strong style="color:var(--ink-2)">Đối tượng:</strong> 9 CH bò sữa (DT cao nhưng ROAS đang giảm).<br>
+            <strong style="color:var(--ink-2)">Hành động:</strong> Giữ ngân sách, refresh creative, test audience mới, tăng frequency cap.<br>
+            <strong style="color:var(--ink-2)">KPI T6:</strong> ROAS phục hồi từ 4x → 6x.
+          </p>
+        </div>
+
+        <div class="card" style="border-left: 3px solid var(--red); padding: 20px;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            <div style="width:32px; height:32px; border-radius:8px; background: rgba(255,110,122,0.15); color:var(--red); display:grid; place-items:center; font-weight:800;">4</div>
+            <div>
+              <p class="card-title" style="margin:0">Xử lý nhóm thảm họa</p>
+              <p style="font-size:11.5px; color:var(--red); margin:3px 0 0 0; font-weight:600;">Khẩn cấp · Cắt lỗ</p>
+            </div>
+          </div>
+          <p style="font-size:12.5px; color:var(--muted); line-height:1.7; margin:8px 0 0 0;">
+            <strong style="color:var(--ink-2)">Đối tượng:</strong> 8 CH thảm họa (Hóc Môn, Bến Cát, Quy Nhơn, Cần Thơ...).<br>
+            <strong style="color:var(--ink-2)">Hành động:</strong> Cắt 70% ngân sách Ads, chuyển sang walk-in offline (banner, leaflet), đánh giá sau Q3.<br>
+            <strong style="color:var(--ink-2)">KPI T6:</strong> Save 225tr chi phí, ROAS hệ thống ≥ 8x.
+          </p>
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-icon">▶</div>
+        <div class="insight-title">Tổng kết tác động kỳ vọng T6/2026</div>
+        <div class="insight-text">
+          Nếu thực thi đúng 4 hướng trên, T6 dự kiến: <strong>Doanh thu Ads tăng từ 9.1 tỷ → 12 tỷ (+32%)</strong>, ROAS từ 6.22x → 8.5x, CPL giảm từ 66K → 55K. Quan trọng hơn, sau khi loại bỏ nhóm thảm họa khỏi Ads, có thể tập trung hoàn toàn vào 3 nhóm còn lại (31 CH) - giảm phân tâm và tăng hiệu quả quản trị. Bài học lớn nhất từ T4-T5: <strong>scale ngân sách không phải lúc nào cũng scale ROAS</strong>; nhóm Q4 đã chứng minh điều đó.
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ============================================================
+   GUMAC · Marketing Intelligence Hub
+   Unified Dashboard với Lazy-load 3 nhóm chính
+   ============================================================ */
+
+/* ====== AUTH (đơn giản với password text) ====== */
+const VALID_PASSWORD = 'gumac2026';
+const SESSION_KEY = 'gumac_hub_session';
+
+function checkLogin(){
+  const pwd = document.getElementById('pwdInput').value;
+  const err = document.getElementById('loginErr');
+  const btn = document.querySelector('.login-btn');
+  if (!pwd){ err.textContent = 'Vui lòng nhập mật khẩu'; return; }
+  btn.disabled = true; btn.textContent = 'Đang xác thực…'; err.textContent = '';
+  setTimeout(() => {
+    if (pwd === VALID_PASSWORD){
+      sessionStorage.setItem(SESSION_KEY, 'authenticated');
+      enterApp();
+    } else {
+      err.textContent = 'Sai mật khẩu. Vui lòng thử lại.';
+      btn.disabled = false; btn.textContent = 'Đăng nhập';
+    }
+  }, 400);
+}
+
+function enterApp(){
+  document.getElementById('loginWrap').style.display = 'none';
+  const loader = document.getElementById('loader');
+  loader.classList.remove('hide');
+  document.getElementById('loaderText').textContent = 'Đang khởi tạo Atelier CRM…';
+  setTimeout(() => {
+    loader.classList.add('hide');
+    document.getElementById('app').style.display = 'grid';
+    // CRM Group được load mặc định
+    loadGroup('crm');
+  }, 600);
+}
+
+function logout(){
+  sessionStorage.removeItem(SESSION_KEY);
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginWrap').style.display = 'flex';
+  document.getElementById('pwdInput').value = '';
+  document.querySelector('.login-btn').disabled = false;
+  document.querySelector('.login-btn').textContent = 'Đăng nhập';
+}
+
+document.getElementById('pwdInput').addEventListener('keypress', e => {
+  if (e.key === 'Enter') checkLogin();
+});
+
+// Tự động đăng nhập nếu session còn
+window.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem(SESSION_KEY) === 'authenticated'){
+    enterApp();
+  }
+});
+
+/* ====== SIDEBAR & THEME ====== */
+function toggleSidebar(){
+  const app = document.getElementById('app');
+  app.classList.toggle('collapsed');
+  document.getElementById('toggleBtn').textContent = app.classList.contains('collapsed') ? '›' : '‹';
+  // Resize charts sau khi collapse
+  setTimeout(resizeActiveCharts, 280);
+}
+
+function toggleTheme(){
+  const root = document.documentElement;
+  const cur = root.getAttribute('data-theme') || 'dark';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  document.getElementById('themeIcon').textContent = next === 'dark' ? '☀' : '☾';
+  localStorage.setItem('gumac_theme', next);
+  // Re-render charts với theme mới
+  setTimeout(reRenderAllCharts, 100);
+}
+
+(function initTheme(){
+  const saved = localStorage.getItem('gumac_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  const ic = document.getElementById('themeIcon');
+  if (ic) ic.textContent = saved === 'dark' ? '☀' : '☾';
+})();
+
+/* ====== NAVIGATION (sidebar groups + items) ====== */
+const SECTION_META = {
+  'crm-overview': { group: 'Atelier CRM', page: 'Tổng quan CRM' },
+  'crm-customers': { group: 'Atelier CRM', page: 'Khách hàng' },
+  'crm-campaigns': { group: 'Atelier CRM', page: 'Chiến dịch SMS' },
+  'crm-sec1': { group: 'Atelier CRM', page: 'Hiệu quả chiến dịch' },
+  'crm-sec2': { group: 'Atelier CRM', page: 'Phân tích chi nhánh' },
+  'crm-sec3': { group: 'Atelier CRM', page: 'Phân khúc KH (RFM)' },
+  'crm-sec4': { group: 'Atelier CRM', page: 'Hành vi mua' },
+  'crm-sec5': { group: 'Atelier CRM', page: 'Sinh nhật VCSN' },
+  'crm-sec6': { group: 'Atelier CRM', page: 'Định hướng' },
+  'sales-overview': { group: 'Sales Dashboard', page: 'Tổng quan KPI' },
+  'sales-trend': { group: 'Sales Dashboard', page: 'Xu hướng theo ngày' },
+  'sales-daily': { group: 'Sales Dashboard', page: 'Chi tiết theo ngày' },
+  'sales-branches': { group: 'Sales Dashboard', page: 'Top/Bottom chi nhánh' },
+  'sales-classify': { group: 'Sales Dashboard', page: 'Phân loại chi nhánh' },
+  'dig-overview': { group: 'Digital Analytics', page: 'Overview Digital' },
+  'dig-ads-kpi': { group: 'Digital Analytics', page: 'KPI Ads & YoY' },
+  'dig-ads-monthly': { group: 'Digital Analytics', page: 'Ads theo tháng' },
+  'dig-ads-stores': { group: 'Digital Analytics', page: 'Hiệu suất CH Ads' },
+  'dig-ads-matrix': { group: 'Digital Analytics', page: 'Ma trận chiến lược' },
+  'dig-fb-overview': { group: 'Digital Analytics', page: 'Fanpage tổng quan' },
+  'dig-fb-growth': { group: 'Digital Analytics', page: 'Top tăng trưởng' },
+  'dig-fb-content': { group: 'Digital Analytics', page: 'Top nội dung' },
+  'dig-fb-weak': { group: 'Digital Analytics', page: 'Fanpage yếu kém' },
+  'dig-action': { group: 'Digital Analytics', page: 'Action Plan T6' },
+};
+
+// Toggle group open/close
+document.querySelectorAll('.nav-group').forEach(g => {
+  g.addEventListener('click', () => {
+    g.classList.toggle('open');
+  });
+});
+
+// Click nav-item: switch section + lazy-load group
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const sec = btn.dataset.section;
+    const grp = btn.dataset.group;
+    // Active state
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    // Show section
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById('section-' + sec);
+    if (target) target.classList.add('active');
+    // Breadcrumb
+    const meta = SECTION_META[sec];
+    if (meta){
+      document.getElementById('crumbGroup').textContent = meta.group;
+      document.getElementById('crumbPage').textContent = meta.page;
+    }
+    // Lazy load group nếu chưa render
+    loadGroup(grp);
+    // Scroll lên đầu
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+/* ====== LAZY LOAD GROUP DATA ====== */
+const LOADED_GROUPS = { crm: false, sales: false, digital: false };
+
+function loadGroup(grp){
+  if (LOADED_GROUPS[grp]) return;
+  LOADED_GROUPS[grp] = true;
+  // Render charts của group đó
+  setTimeout(() => {
+    if (grp === 'crm') renderCRMCharts();
+    else if (grp === 'sales') renderSalesCharts();
+    else if (grp === 'digital') renderDigitalCharts();
+  }, 50);
+}
+
+/* ====== CHART HELPERS ====== */
+function getThemeColors(){
+  const css = getComputedStyle(document.documentElement);
+  return {
+    amber: css.getPropertyValue('--amber').trim(),
+    amberBright: css.getPropertyValue('--amber-bright').trim(),
+    amberDeep: css.getPropertyValue('--amber-deep').trim(),
+    green: css.getPropertyValue('--green').trim(),
+    red: css.getPropertyValue('--red').trim(),
+    blue: css.getPropertyValue('--blue').trim(),
+    violet: css.getPropertyValue('--violet').trim(),
+    ink: css.getPropertyValue('--ink').trim(),
+    muted: css.getPropertyValue('--muted').trim(),
+    line: css.getPropertyValue('--line-2').trim(),
+    surface: css.getPropertyValue('--surface').trim(),
+  };
+}
+
+const CHART_REGISTRY = {};
+
+function makeChart(id, config){
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (CHART_REGISTRY[id]){
+    try { CHART_REGISTRY[id].destroy(); } catch(e){}
+  }
+  CHART_REGISTRY[id] = new Chart(el, config);
+}
+
+function reRenderAllCharts(){
+  // Khi đổi theme, render lại tất cả group đã loaded
+  if (LOADED_GROUPS.crm){
+    Object.keys(CHART_REGISTRY).forEach(k => { if (k.startsWith('ch_crm') || k.startsWith('ch_camp') || k.startsWith('ch_s')) {} });
+    renderCRMCharts();
+  }
+  if (LOADED_GROUPS.sales) renderSalesCharts();
+  if (LOADED_GROUPS.digital) renderDigitalCharts();
+}
+
+function resizeActiveCharts(){
+  Object.values(CHART_REGISTRY).forEach(c => { try { c.resize(); } catch(e){}});
+}
+
+/* Common chart options */
+function commonOpts(){
+  const c = getThemeColors();
+  return {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: c.muted, font: { size: 11, family: 'Montserrat' }}},
+      tooltip: {
+        backgroundColor: c.surface,
+        borderColor: c.line, borderWidth: 1,
+        titleColor: c.ink, bodyColor: c.ink,
+        titleFont: { size: 12, family: 'Montserrat', weight: '600' },
+        bodyFont: { size: 11.5, family: 'Montserrat' },
+        padding: 10, cornerRadius: 8,
+        boxPadding: 4,
+      },
+      datalabels: { display: false }
+    },
+    scales: {
+      x: { grid: { color: c.line, drawBorder: false }, ticks: { color: c.muted, font: { size: 10, family: 'Montserrat' }}},
+      y: { grid: { color: c.line, drawBorder: false }, ticks: { color: c.muted, font: { size: 10, family: 'Montserrat' }}}
+    },
+    animation: { duration: 700, easing: 'easeOutQuart' }
+  };
+}
+
+/* ============================================================
+   GROUP 1 · ATELIER CRM CHARTS
+   ============================================================ */
+function renderCRMCharts(){
+  const c = getThemeColors();
+
+  /* ---- 1.1 Overview gauge + revenue ---- */
+  makeChart('ch_crmGauge', {
+    type: 'doughnut',
+    data: { datasets: [{
+      data: [82, 18], backgroundColor: [c.amber, 'rgba(255,255,255,0.06)'],
+      borderWidth: 0, cutout: '78%'
+    }]},
+    options: { responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { display: false }, tooltip: { enabled: false }, datalabels: { display: false }},
+      animation: { duration: 1200 }
+    }
+  });
+
+  const days = Array.from({length: 30}, (_,i) => `${String(i+1).padStart(2,'0')}/05`);
+  const revData = [1.85,1.92,2.05,1.78,1.95,2.12,2.45,2.18,1.92,2.08,2.32,2.12,1.95,2.18,2.45,2.28,2.12,2.35,2.18,1.95,2.42,2.28,2.05,2.18,2.42,2.32,2.45,2.18,2.05,2.45];
+  makeChart('ch_crm_revenue', {
+    type: 'line',
+    data: { labels: days, datasets: [{
+      label: 'Doanh thu (tỷ VNĐ)', data: revData,
+      borderColor: c.amber, backgroundColor: c.amber + '22',
+      fill: true, tension: 0.35, borderWidth: 2.5,
+      pointRadius: 0, pointHoverRadius: 5, pointBackgroundColor: c.amber
+    }]},
+    options: commonOpts()
+  });
+
+  /* ---- 1.3 Campaigns ---- */
+  const campLabels = ['VCSN05.26','SALE04.26','FLASH03.26','REACT02.26','TET01.26'];
+  makeChart('ch_camp_sentConv', {
+    type: 'bar',
+    data: { labels: campLabels, datasets: [
+      { label: 'SMS gửi', data: [28450,35200,22100,18600,24100], backgroundColor: c.amber + 'cc', borderRadius: 6 },
+      { label: 'KH chuyển đổi (×10)', data: [7530,8520,4770,3110,8050], backgroundColor: c.green + 'cc', borderRadius: 6 }
+    ]},
+    options: commonOpts()
+  });
+
+  makeChart('ch_camp_revCost', {
+    type: 'bar',
+    data: { labels: campLabels, datasets: [
+      { label: 'Doanh thu (triệu)', data: [692.76, 749.76, 405.45, 255.02, 752.68], backgroundColor: c.amber + 'cc', borderRadius: 6 },
+      { label: 'Chi phí (triệu)', data: [14.22, 17.60, 11.05, 9.30, 14.35], backgroundColor: c.red + 'cc', borderRadius: 6 }
+    ]},
+    options: commonOpts()
+  });
+
+  makeChart('ch_camp_roi', {
+    type: 'bar',
+    data: { labels: campLabels, datasets: [{
+      label: 'ROI (x)', data: [48.7, 42.6, 36.7, 27.4, 52.5],
+      backgroundColor: [c.green, c.green, c.amber, c.red, c.green],
+      borderRadius: 8
+    }]},
+    options: commonOpts()
+  });
+
+  makeChart('ch_camp_cr', {
+    type: 'line',
+    data: { labels: campLabels, datasets: [{
+      label: 'CR (%)', data: [3.12, 2.86, 2.45, 1.92, 3.78],
+      borderColor: c.amber, backgroundColor: c.amber + '22',
+      fill: true, tension: 0.4, borderWidth: 2.5,
+      pointRadius: 5, pointBackgroundColor: c.amber
+    }]},
+    options: commonOpts()
+  });
+
+  /* ---- 1.4 Section 1: Hiệu quả CD ---- */
+  makeChart('ch_s1_cr', {
+    type: 'bar',
+    data: { labels: campLabels, datasets: [{
+      label: 'CR (%)', data: [3.12, 2.86, 2.45, 1.92, 3.78],
+      backgroundColor: c.amber + 'cc', borderRadius: 8
+    }]},
+    options: commonOpts()
+  });
+
+  makeChart('ch_s1_revAtv', {
+    type: 'bar',
+    data: { labels: campLabels, datasets: [
+      { label: 'Doanh thu (triệu)', data: [692.76, 749.76, 405.45, 255.02, 752.68], backgroundColor: c.amber + 'cc', borderRadius: 6, yAxisID: 'y' },
+      { type: 'line', label: 'ATV (nghìn)', data: [920, 880, 850, 820, 935], borderColor: c.green, backgroundColor: c.green, borderWidth: 2.5, yAxisID: 'y1', pointRadius: 4 }
+    ]},
+    options: Object.assign({}, commonOpts(), {
+      scales: {
+        x: commonOpts().scales.x,
+        y: Object.assign({}, commonOpts().scales.y, { position: 'left', title: { display: true, text: 'Doanh thu', color: c.muted }}),
+        y1: { position: 'right', grid: { display: false }, ticks: { color: c.muted, font: { size: 10 }}, title: { display: true, text: 'ATV', color: c.muted }}
+      }
+    })
+  });
+
+  makeChart('ch_s1_funnel', {
+    type: 'bar',
+    data: { labels: ['SMS gửi', 'KH unique', 'KH mua'], datasets: [{
+      label: 'Funnel', data: [128450, 102570, 3282],
+      backgroundColor: [c.blue + 'cc', c.amber + 'cc', c.green + 'cc'],
+      borderRadius: 8
+    }]},
+    options: Object.assign({}, commonOpts(), { indexAxis: 'y' })
+  });
+
+  makeChart('ch_s1_contrib', {
+    type: 'doughnut',
+    data: { labels: campLabels, datasets: [{
+      data: [692.76, 749.76, 405.45, 255.02, 752.68],
+      backgroundColor: [c.amber, c.green, c.blue, c.violet, c.red],
+      borderWidth: 2, borderColor: c.surface
+    }]},
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'right', labels: { color: c.muted, font: { size: 11 }}},
+        tooltip: commonOpts().plugins.tooltip, datalabels: { display: false }}
+    }
+  });
+
+  /* ---- 1.5 Section 2: Branch ---- */
+  const branchLabels = ['Q1 Lê Lai','Q7 PMH','Bình Thạnh','Tân Bình','Gò Vấp','Q9','Biên Hoà','Cần Thơ'];
+  makeChart('ch_s2_smsRcv', {
+    type: 'bar',
+    data: { labels: branchLabels, datasets: [{
+      label: 'SMS gửi', data: [12800, 11200, 9800, 8500, 7200, 6800, 5500, 4200],
+      backgroundColor: c.amber + 'cc', borderRadius: 6
+    }]},
+    options: Object.assign({}, commonOpts(), { indexAxis: 'y' })
+  });
+
+  makeChart('ch_s2_smsRev', {
+    type: 'bar',
+    data: { labels: branchLabels, datasets: [{
+      label: 'Doanh thu SMS (triệu)', data: [358.4, 301.2, 228.3, 192.5, 142.8, 125.4, 85.6, 62.3],
+      backgroundColor: c.green + 'cc', borderRadius: 6
+    }]},
+    options: Object.assign({}, commonOpts(), { indexAxis: 'y' })
+  });
+
+  makeChart('ch_s2_matrix', {
+    type: 'bubble',
+    data: { datasets: [{
+      label: 'Chi nhánh',
+      data: [
+        { x: 12800, y: 3.45, r: 18 }, { x: 11200, y: 3.28, r: 16 }, { x: 9800, y: 2.92, r: 14 },
+        { x: 8500, y: 2.78, r: 12 }, { x: 7200, y: 2.45, r: 10 }, { x: 6800, y: 2.32, r: 9 },
+        { x: 5500, y: 1.85, r: 7 }, { x: 4200, y: 1.72, r: 6 }
+      ],
+      backgroundColor: c.amber + '88', borderColor: c.amber, borderWidth: 2
+    }]},
+    options: Object.assign({}, commonOpts(), {
+      scales: {
+        x: Object.assign({}, commonOpts().scales.x, { title: { display: true, text: 'SMS gửi', color: c.muted }}),
+        y: Object.assign({}, commonOpts().scales.y, { title: { display: true, text: 'CR (%)', color: c.muted }})
+      },
+      plugins: Object.assign({}, commonOpts().plugins, { legend: { display: false }})
+    })
+  });
+
+  /* ---- 1.6 Section 3: RFM ---- */
+  const rfmLabels = ['Champions','Loyal','Potential','New','Need Attention','Hibernating','Lost'];
+  makeChart('ch_s3_sentConv', {
+    type: 'bar',
+    data: { labels: rfmLabels, datasets: [
+      { label: 'SMS gửi', data: [15420, 23100, 28450, 12800, 18600, 22100, 7980], backgroundColor: c.amber + 'cc', borderRadius: 6 },
+      { label: 'KH chuyển đổi', data: [897, 982, 887, 318, 363, 314, 68], backgroundColor: c.green + 'cc', borderRadius: 6 }
+    ]},
+    options: commonOpts()
+  });
+
+  makeChart('ch_s3_cr', {
+    type: 'bar',
+    data: { labels: rfmLabels, datasets: [{
+      label: 'CR (%)', data: [5.82, 4.25, 3.12, 2.48, 1.95, 1.42, 0.85],
+      backgroundColor: [c.green, c.green, c.amber, c.amber, c.red, c.red, c.red],
+      borderRadius: 8
+    }]},
+    options: commonOpts()
+  });
+
+  makeChart('ch_s3_rev', {
+    type: 'bar',
+    data: { labels: rfmLabels, datasets: [{
+      label: 'Doanh thu (triệu)', data: [1045, 856, 524, 235, 152, 96, 38],
+      backgroundColor: c.amber + 'cc', borderRadius: 6
+    }]},
+    options: commonOpts()
+  });
+
+  makeChart('ch_s3_atv', {
+    type: 'line',
+    data: { labels: rfmLabels, datasets: [{
+      label: 'ATV (nghìn)', data: [1165, 980, 890, 820, 795, 760, 730],
+      borderColor: c.amber, backgroundColor: c.amber + '22',
+      fill: true, tension: 0.35, borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: c.amber
+    }]},
+    options: commonOpts()
+  });
+
+  makeChart('ch_s3_gender', {
+    type: 'bar',
+    data: { labels: rfmLabels, datasets: [
+      { label: 'Nữ', data: [85, 82, 78, 75, 72, 68, 65], backgroundColor: c.amber + 'cc', borderRadius: 6, stack: 'a' },
+      { label: 'Nam', data: [15, 18, 22, 25, 28, 32, 35], backgroundColor: c.blue + 'cc', borderRadius: 6, stack: 'a' }
+    ]},
+    options: Object.assign({}, commonOpts(), {
+      scales: {
+        x: Object.assign({}, commonOpts().scales.x, { stacked: true }),
+        y: Object.assign({}, commonOpts().scales.y, { stacked: true, max: 100, ticks: Object.assign({}, commonOpts().scales.y.ticks, { callback: v => v + '%' })})
+      }
+    })
+  });
+
+  /* ---- 1.7 Section 4: Behavior ---- */
+  makeChart('ch_s4_dailyRev', {
+    type: 'line',
+    data: { labels: days, datasets: [{
+      label: 'Doanh thu (tỷ)', data: revData,
+      borderColor: c.amber, backgroundColor: c.amber + '22',
+      fill: true, tension: 0.35, borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 5
+    }]},
+    options: commonOpts()
+  });
+
+  makeChart('ch_s4_freq', {
+    type: 'bar',
+    data: { labels: ['1 đơn','2 đơn','3-5 đơn','6-10 đơn','11-20 đơn','>20 đơn'], datasets: [{
+      label: 'Số KH', data: [18200, 12450, 8920, 5480, 2480, 743],
+      backgroundColor: c.amber + 'cc', borderRadius: 6
+    }]},
+    options: commonOpts()
+  });
+
+  makeChart('ch_s4_dow', {
+    type: 'bar',
+    data: { labels: ['T2','T3','T4','T5','T6','T7','CN'], datasets: [{
+      label: 'Doanh thu (tỷ)', data: [6.8, 7.2, 7.5, 7.8, 8.5, 9.2, 9.8],
+      backgroundColor: [c.muted + '99', c.muted + '99', c.muted + '99', c.muted + '99', c.amber, c.amber, c.amber],
+      borderRadius: 8
+    }]},
+    options: commonOpts()
+  });
+
+  makeChart('ch_s4_atvDist', {
+    type: 'bar',
+    data: { labels: ['<500K','500-700K','700-900K','900K-1.2tr','1.2-1.5tr','>1.5tr'], datasets: [{
+      label: 'Số đơn', data: [4250, 8920, 12480, 18620, 8950, 3680],
+      backgroundColor: c.green + 'cc', borderRadius: 6
+    }]},
+    options: commonOpts()
+  });
+
+  makeChart('ch_s4_voucherDay', {
+    type: 'bar',
+    data: { labels: ['Ngày 1','Ngày 2','Ngày 3','Ngày 4','Ngày 5','Ngày 6','Ngày 7','>7 ngày'], datasets: [{
+      label: 'Số KH dùng voucher', data: [180, 285, 420, 580, 380, 245, 142, 68],
+      backgroundColor: c.amber + 'cc', borderRadius: 6
+    }]},
+    options: commonOpts()
+  });
+
+  /* ---- 1.8 Section 5: VCSN ---- */
+  makeChart('ch_s5_funnel', {
+    type: 'bar',
+    data: { labels: ['SMS gửi', 'Click', 'Đến CH', 'Thử đồ', 'Mua hàng'], datasets: [{
+      label: 'Số KH', data: [24120, 8450, 2842, 1820, 753],
+      backgroundColor: [c.blue, c.violet, c.amber, c.green, c.amber + 'dd'],
+      borderRadius: 8
+    }]},
+    options: Object.assign({}, commonOpts(), { indexAxis: 'y' })
+  });
+
+  makeChart('ch_s5_group', {
+    type: 'doughnut',
+    data: { labels: ['KH mới (28%)', 'Thân thiết (45%)', 'VIP (27%)'], datasets: [{
+      data: [28, 45, 27], backgroundColor: [c.blue, c.amber, c.green],
+      borderWidth: 2, borderColor: c.surface
+    }]},
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { color: c.muted, font: { size: 11 }}},
+        tooltip: commonOpts().plugins.tooltip, datalabels: { display: false }}
+    }
+  });
+
+  makeChart('ch_s5_groupRev', {
+    type: 'bar',
+    data: { labels: ['KH mới', 'Thân thiết', 'VIP'], datasets: [
+      { label: 'Doanh thu (triệu)', data: [124.5, 285.8, 282.46], backgroundColor: c.amber + 'cc', borderRadius: 6, yAxisID: 'y' },
+      { type: 'line', label: 'ATV (nghìn)', data: [820, 920, 1085], borderColor: c.green, backgroundColor: c.green, borderWidth: 2.5, yAxisID: 'y1', pointRadius: 5 }
+    ]},
+    options: Object.assign({}, commonOpts(), {
+      scales: {
+        x: commonOpts().scales.x,
+        y: Object.assign({}, commonOpts().scales.y, { position: 'left' }),
+        y1: { position: 'right', grid: { display: false }, ticks: { color: c.muted }}
+      }
+    })
+  });
+
+  makeChart('ch_s5_branch', {
+    type: 'bar',
+    data: { labels: ['Q1 Lê Lai','Q7 PMH','Vincom ĐK','Crescent Mall','AEON Tân Phú','Bình Thạnh','Tân Bình','Gò Vấp'], datasets: [{
+      label: 'KH VCSN đến CH', data: [385, 320, 285, 245, 218, 195, 168, 142],
+      backgroundColor: c.amber + 'cc', borderRadius: 6
+    }]},
+    options: Object.assign({}, commonOpts(), { indexAxis: 'y' })
+  });
+
+  /* ---- 1.9 Section 6: Direction ---- */
+  makeChart('ch_s6_radar', {
+    type: 'radar',
+    data: { labels: ['Open Rate','CR','ROI','ATV','Voucher Usage','Active Rate'],
+      datasets: [
+        { label: 'GUMAC', data: [94, 85, 95, 92, 95, 80], borderColor: c.amber, backgroundColor: c.amber + '33', borderWidth: 2.5, pointBackgroundColor: c.amber },
+        { label: 'Benchmark', data: [92, 75, 70, 80, 60, 85], borderColor: c.muted, backgroundColor: c.muted + '20', borderWidth: 2, borderDash: [5,5], pointBackgroundColor: c.muted }
+      ]},
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: c.muted }}, tooltip: commonOpts().plugins.tooltip, datalabels: { display: false }},
+      scales: { r: {
+        angleLines: { color: c.line }, grid: { color: c.line },
+        pointLabels: { color: c.ink, font: { size: 11 }},
+        ticks: { display: false, max: 100, min: 0 }
+      }}
+    }
+  });
+
+  makeChart('ch_s6_maturity', {
+    type: 'doughnut',
+    data: { datasets: [{
+      data: [78, 22], backgroundColor: [c.amber, 'rgba(255,255,255,0.06)'],
+      borderWidth: 0, cutout: '75%'
+    }]},
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { enabled: false }, datalabels: {
+        display: true, color: c.amber, font: { size: 32, weight: 'bold', family: 'Montserrat' },
+        formatter: (val, ctx) => ctx.dataIndex === 0 ? '78/100' : ''
+      }},
+      animation: { duration: 1200 }
+    },
+    plugins: [ChartDataLabels]
+  });
+}
+
+/* ============================================================
+   GROUP 2 · SALES DASHBOARD CHARTS
+   ============================================================ */
+function renderSalesCharts(){
+  const c = getThemeColors();
+  const days24 = Array.from({length: 24}, (_,i) => `${String(i+1).padStart(2,'0')}/05`);
+  const revActual = [1.95,2.08,1.82,1.95,2.18,2.32,2.05,2.45,2.18,2.05,1.92,2.12,2.32,2.08,1.95,2.22,2.45,1.85,2.05,2.12,2.32,1.92,2.05,2.18,2.32,2.45];
+  // 24 days
+  const revAct = revActual.slice(0, 24);
+  const revTgt = revAct.map(v => v * (0.85 + Math.random() * 0.1));
+
+  /* ---- 2.2 Sales Revenue Trend ---- */
+  makeChart('ch_sales_revTrend', {
+    type: 'line',
+    data: { labels: days24, datasets: [
+      { label: 'Thực đạt', data: revAct, borderColor: c.amber, backgroundColor: c.amber + '22', fill: true, tension: 0.35, borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 5 },
+      { label: 'Mục tiêu', data: revTgt, borderColor: c.muted, borderDash: [6, 4], borderWidth: 2, pointRadius: 0, fill: false, tension: 0.3 }
+    ]},
+    options: commonOpts()
+  });
+
+  /* ---- Order & Traffic ---- */
+  const orderData = revAct.map(v => Math.round(v * 1085));
+  const trafficData = revAct.map(v => Math.round(v * 2750));
+  makeChart('ch_sales_orderTraffic', {
+    type: 'line',
+    data: { labels: days24, datasets: [
+      { label: 'Đơn hàng', data: orderData, borderColor: c.violet, backgroundColor: c.violet + '22', tension: 0.35, borderWidth: 2.5, pointRadius: 0, yAxisID: 'y' },
+      { label: 'Traffic', data: trafficData, borderColor: c.amber, backgroundColor: c.amber + '22', tension: 0.35, borderWidth: 2.5, pointRadius: 0, yAxisID: 'y1' }
+    ]},
+    options: Object.assign({}, commonOpts(), {
+      scales: {
+        x: commonOpts().scales.x,
+        y: Object.assign({}, commonOpts().scales.y, { position: 'left' }),
+        y1: { position: 'right', grid: { display: false }, ticks: { color: c.muted }}
+      }
+    })
+  });
+
+  /* ---- ATV & UPT ---- */
+  const atvData = days24.map((_, i) => 905 + Math.round(Math.random() * 30));
+  const uptData = days24.map((_, i) => 2.25 + Math.random() * 0.2);
+  makeChart('ch_sales_atvUpt', {
+    type: 'line',
+    data: { labels: days24, datasets: [
+      { label: 'ATV (nghìn)', data: atvData, borderColor: c.amber, tension: 0.35, borderWidth: 2.5, pointRadius: 0, yAxisID: 'y' },
+      { label: 'UPT', data: uptData, borderColor: c.green, tension: 0.35, borderWidth: 2.5, pointRadius: 0, yAxisID: 'y1' }
+    ]},
+    options: Object.assign({}, commonOpts(), {
+      scales: {
+        x: commonOpts().scales.x,
+        y: Object.assign({}, commonOpts().scales.y, { position: 'left' }),
+        y1: { position: 'right', grid: { display: false }, ticks: { color: c.muted }, max: 2.6, min: 2.0 }
+      }
+    })
+  });
+
+  /* ---- CRV ---- */
+  const crvData = days24.map((_, i) => 37 + Math.random() * 5);
+  makeChart('ch_sales_crvTrend', {
+    type: 'line',
+    data: { labels: days24, datasets: [{
+      label: 'CRV (%)', data: crvData, borderColor: c.red, backgroundColor: c.red + '22',
+      fill: true, tension: 0.35, borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 5
+    }]},
+    options: commonOpts()
+  });
+
+  /* ---- 2.4 Top/Bottom 5 ---- */
+  makeChart('ch_sales_top5', {
+    type: 'bar',
+    data: { labels: ['Q1 Lê Lai','Q7 PMH','Vincom ĐK','Crescent Mall','AEON Tân Phú'], datasets: [{
+      label: 'Doanh thu (tỷ)', data: [4.85, 4.12, 3.78, 3.45, 3.18],
+      backgroundColor: c.green + 'cc', borderRadius: 8
+    }]},
+    options: Object.assign({}, commonOpts(), { indexAxis: 'y' })
+  });
+
+  makeChart('ch_sales_bot5', {
+    type: 'bar',
+    data: { labels: ['Đỗ Xuân Hợp Q9','Quy Nhơn','Bến Cát','Cần Thơ','Hóc Môn'], datasets: [{
+      label: 'Doanh thu (tỷ)', data: [0.65, 0.58, 0.52, 0.48, 0.42],
+      backgroundColor: c.red + 'cc', borderRadius: 8
+    }]},
+    options: Object.assign({}, commonOpts(), { indexAxis: 'y' })
+  });
+
+  /* ---- 2.5 Branch matrix ---- */
+  // 39 stores in 4 quadrants
+  const matrix = {
+    'Vô địch': Array.from({length: 12}, () => ({ x: 2.5 + Math.random() * 2.5, y: 15 + Math.random() * 25 })),
+    'Tiềm năng': Array.from({length: 10}, () => ({ x: 0.8 + Math.random() * 1.5, y: 18 + Math.random() * 25 })),
+    'Bò sữa': Array.from({length: 9}, () => ({ x: 2.5 + Math.random() * 2.5, y: -5 + Math.random() * 15 })),
+    'Vấn đề': Array.from({length: 8}, () => ({ x: 0.4 + Math.random() * 1.2, y: -15 + Math.random() * 18 }))
+  };
+  makeChart('ch_sales_matrix', {
+    type: 'scatter',
+    data: { datasets: [
+      { label: 'Vô địch', data: matrix['Vô địch'], backgroundColor: c.green + 'bb', pointRadius: 8, pointHoverRadius: 12, borderColor: c.green, borderWidth: 1.5 },
+      { label: 'Tiềm năng', data: matrix['Tiềm năng'], backgroundColor: c.amber + 'bb', pointRadius: 8, pointHoverRadius: 12, borderColor: c.amber, borderWidth: 1.5 },
+      { label: 'Bò sữa', data: matrix['Bò sữa'], backgroundColor: c.blue + 'bb', pointRadius: 8, pointHoverRadius: 12, borderColor: c.blue, borderWidth: 1.5 },
+      { label: 'Vấn đề', data: matrix['Vấn đề'], backgroundColor: c.red + 'bb', pointRadius: 8, pointHoverRadius: 12, borderColor: c.red, borderWidth: 1.5 }
+    ]},
+    options: Object.assign({}, commonOpts(), {
+      scales: {
+        x: Object.assign({}, commonOpts().scales.x, { title: { display: true, text: 'Doanh thu (tỷ)', color: c.muted }, min: 0, max: 5.5 }),
+        y: Object.assign({}, commonOpts().scales.y, { title: { display: true, text: 'Tăng trưởng (%)', color: c.muted }, min: -20, max: 50 })
+      }
+    })
+  });
+}
+
+/* ============================================================
+   GROUP 3 · DIGITAL ANALYTICS CHARTS
+   ============================================================ */
+function renderDigitalCharts(){
+  const c = getThemeColors();
+  const months = ['T1','T2','T3','T4','T5'];
+
+  /* ---- 3.1 Overview ---- */
+  makeChart('ch_dig_monthlyRoas', {
+    type: 'bar',
+    data: { labels: months, datasets: [
+      { label: 'ROAS (x)', data: [9.33, 7.85, 4.72, 2.84, 2.21],
+        backgroundColor: [c.green, c.green, c.amber, c.red, c.red], borderRadius: 8, yAxisID: 'y' },
+      { type: 'line', label: 'Chi phí Ads (triệu)', data: [185, 235, 310, 365, 365],
+        borderColor: c.blue, backgroundColor: c.blue, borderWidth: 2.5, yAxisID: 'y1', pointRadius: 4 }
+    ]},
+    options: Object.assign({}, commonOpts(), {
+      scales: {
+        x: commonOpts().scales.x,
+        y: Object.assign({}, commonOpts().scales.y, { position: 'left' }),
+        y1: { position: 'right', grid: { display: false }, ticks: { color: c.muted }}
+      }
+    })
+  });
+
+  makeChart('ch_dig_revPie', {
+    type: 'doughnut',
+    data: { labels: ['DT từ Ads (14.9%)', 'Walk-in & khách quen (85.1%)'], datasets: [{
+      data: [14.9, 85.1], backgroundColor: [c.amber, c.muted + '80'],
+      borderWidth: 2, borderColor: c.surface
+    }]},
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { color: c.muted, font: { size: 11 }}},
+        tooltip: commonOpts().plugins.tooltip, datalabels: { display: false }}
+    }
+  });
+
+  makeChart('ch_dig_fbMonthly', {
+    type: 'bar',
+    data: { labels: months, datasets: [
+      { label: 'Bài đăng', data: [1820, 1750, 1680, 1480, 1693], backgroundColor: c.amber + 'cc', borderRadius: 6, yAxisID: 'y' },
+      { type: 'line', label: 'Tương tác (nghìn)', data: [620, 685, 725, 580, 1000], borderColor: c.green, backgroundColor: c.green, borderWidth: 2.5, yAxisID: 'y1', pointRadius: 4 }
+    ]},
+    options: Object.assign({}, commonOpts(), {
+      scales: { x: commonOpts().scales.x, y: Object.assign({}, commonOpts().scales.y, { position: 'left' }), y1: { position: 'right', grid: { display: false }, ticks: { color: c.muted }}}
+    })
+  });
+
+  makeChart('ch_dig_top5', {
+    type: 'bar',
+    data: { labels: ['Q1 Lê Lai','Q7 PMH','Vincom ĐK','Crescent Mall','AEON Tân Phú'], datasets: [{
+      label: 'Doanh thu (triệu)', data: [4850, 4120, 3780, 3450, 3180],
+      backgroundColor: c.amber + 'cc', borderRadius: 8
+    }]},
+    options: Object.assign({}, commonOpts(), { indexAxis: 'y' })
+  });
+
+  /* ---- 3.2 YoY ---- */
+  makeChart('ch_dig_yoy', {
+    type: 'bar',
+    data: { labels: ['Chi phí Ads','DT tổng','DT Ads','Lead','CPL','CPM','ER','ROAS','CPC offline','AOV'],
+      datasets: [{ label: '% Chênh lệch 2026 vs 2025',
+        data: [29.2, 24.7, 39.8, -4.2, 34.9, -6.8, 189.4, 8.2, 46.1, 48.0],
+        backgroundColor: ctx => {
+          const v = ctx.parsed.y;
+          if (['Chi phí Ads','CPL','CPC offline'].includes(ctx.label)) return c.red + 'cc';
+          return v >= 0 ? c.green + 'cc' : c.red + 'cc';
+        },
+        borderRadius: 6
+      }]},
+    options: Object.assign({}, commonOpts(), {
+      plugins: Object.assign({}, commonOpts().plugins, { legend: { display: false }}),
+      scales: { x: commonOpts().scales.x, y: Object.assign({}, commonOpts().scales.y, { ticks: { color: c.muted, callback: v => v + '%' }})}
+    })
+  });
+
+  /* ---- 3.3 Monthly Ads ---- */
+  makeChart('ch_dig_monthlyDual', {
+    type: 'bar',
+    data: { labels: months, datasets: [
+      { label: 'Chi phí Ads (triệu)', data: [185, 235, 310, 365, 365], backgroundColor: c.blue + 'cc', borderRadius: 6, yAxisID: 'y' },
+      { type: 'line', label: 'ROAS (x)', data: [9.33, 7.85, 4.72, 2.84, 2.21], borderColor: c.amber, backgroundColor: c.amber, borderWidth: 2.5, yAxisID: 'y1', pointRadius: 5 }
+    ]},
+    options: Object.assign({}, commonOpts(), {
+      scales: { x: commonOpts().scales.x, y: Object.assign({}, commonOpts().scales.y, { position: 'left' }), y1: { position: 'right', grid: { display: false }, ticks: { color: c.muted }}}
+    })
+  });
+
+  makeChart('ch_dig_cplCpm', {
+    type: 'line',
+    data: { labels: months, datasets: [
+      { label: 'CPL (nghìn)', data: [53.9, 56.2, 57.7, 78.5, 89.1], borderColor: c.red, backgroundColor: c.red + '22', tension: 0.35, borderWidth: 2.5, pointRadius: 4, fill: true },
+      { label: 'CPM (nghìn)', data: [14.8, 15.1, 15.3, 15.0, 15.2], borderColor: c.amber, backgroundColor: c.amber + '22', tension: 0.35, borderWidth: 2.5, pointRadius: 4 }
+    ]},
+    options: commonOpts()
+  });
+
+  makeChart('ch_dig_leadMonthly', {
+    type: 'bar',
+    data: { labels: months, datasets: [{
+      label: 'Số Lead', data: [4520, 4680, 4250, 4280, 4279],
+      backgroundColor: c.amber + 'cc', borderRadius: 8
+    }]},
+    options: commonOpts()
+  });
+
+  /* ---- 3.4 Ads Stores ---- */
+  makeChart('ch_dig_storeRev', {
+    type: 'bar',
+    data: { labels: ['Q1 Lê Lai','Q7 PMH','Vincom ĐK','Crescent Mall','Bình Thạnh','AEON Tân Phú','Tân Bình','Gò Vấp','Q2 Thảo Điền','Q9'], datasets: [{
+      label: 'DT Ads (triệu)', data: [680, 595, 512, 425, 385, 348, 312, 285, 248, 215],
+      backgroundColor: c.amber + 'cc', borderRadius: 6
+    }]},
+    options: Object.assign({}, commonOpts(), { indexAxis: 'y' })
+  });
+
+  makeChart('ch_dig_topRoas', {
+    type: 'bar',
+    data: { labels: ['Q1 Lê Lai','Q7 PMH','Vincom ĐK','Crescent Mall','Bình Thạnh'], datasets: [{
+      label: 'ROAS (x)', data: [11.6, 11.4, 10.5, 10.1, 10.0],
+      backgroundColor: c.green + 'cc', borderRadius: 8
+    }]},
+    options: Object.assign({}, commonOpts(), { indexAxis: 'y' })
+  });
+
+  /* ---- 3.5 Ads Matrix ---- */
+  const adsMatrix = {
+    'Vô địch (Q1)': Array.from({length: 12}, () => ({ x: 350 + Math.random() * 350, y: 8 + Math.random() * 5, r: 12 })),
+    'Tiềm năng (Q2)': Array.from({length: 10}, () => ({ x: 80 + Math.random() * 180, y: 7 + Math.random() * 4, r: 8 })),
+    'Bò sữa (Q3)': Array.from({length: 9}, () => ({ x: 280 + Math.random() * 250, y: 3 + Math.random() * 2.5, r: 14 })),
+    'Thảm họa (Q4)': Array.from({length: 8}, () => ({ x: 40 + Math.random() * 80, y: 1.5 + Math.random() * 1.5, r: 10 }))
+  };
+  makeChart('ch_dig_matrix', {
+    type: 'bubble',
+    data: { datasets: [
+      { label: 'Vô địch', data: adsMatrix['Vô địch (Q1)'], backgroundColor: c.green + 'aa', borderColor: c.green, borderWidth: 1.5 },
+      { label: 'Tiềm năng', data: adsMatrix['Tiềm năng (Q2)'], backgroundColor: c.amber + 'aa', borderColor: c.amber, borderWidth: 1.5 },
+      { label: 'Bò sữa', data: adsMatrix['Bò sữa (Q3)'], backgroundColor: c.blue + 'aa', borderColor: c.blue, borderWidth: 1.5 },
+      { label: 'Thảm họa', data: adsMatrix['Thảm họa (Q4)'], backgroundColor: c.red + 'aa', borderColor: c.red, borderWidth: 1.5 }
+    ]},
+    options: Object.assign({}, commonOpts(), {
+      scales: {
+        x: Object.assign({}, commonOpts().scales.x, { title: { display: true, text: 'Doanh thu Ads (triệu)', color: c.muted }}),
+        y: Object.assign({}, commonOpts().scales.y, { title: { display: true, text: 'ROAS (x)', color: c.muted }})
+      }
+    })
+  });
+
+  /* ---- 3.6 Fanpage Overview ---- */
+  makeChart('ch_dig_fbPostMonth', {
+    type: 'bar',
+    data: { labels: months, datasets: [{
+      label: 'Bài đăng', data: [1820, 1750, 1680, 1480, 1693],
+      backgroundColor: months.map((_, i) => i === 3 ? c.red + 'cc' : c.amber + 'cc'),
+      borderRadius: 8
+    }]},
+    options: commonOpts()
+  });
+
+  makeChart('ch_dig_fbViewMonth', {
+    type: 'line',
+    data: { labels: months, datasets: [
+      { label: 'Lượt xem (triệu)', data: [3.45, 3.62, 3.85, 2.98, 3.66], borderColor: c.amber, backgroundColor: c.amber + '22', fill: true, tension: 0.35, borderWidth: 2.5, pointRadius: 5, yAxisID: 'y' },
+      { label: 'Tương tác (nghìn)', data: [620, 685, 725, 580, 1000], borderColor: c.green, borderWidth: 2.5, tension: 0.35, pointRadius: 5, yAxisID: 'y1' }
+    ]},
+    options: Object.assign({}, commonOpts(), {
+      scales: { x: commonOpts().scales.x, y: Object.assign({}, commonOpts().scales.y, { position: 'left' }), y1: { position: 'right', grid: { display: false }, ticks: { color: c.muted }}}
+    })
+  });
+
+  /* ---- 3.7 FB Growth ---- */
+  makeChart('ch_dig_growth', {
+    type: 'bar',
+    data: { labels: ['Hóc Môn','Biên Hoà','Đỗ Xuân Hợp Q9','Bến Cát','Quy Nhơn','Cần Thơ','Vũng Tàu','Tây Ninh','Trà Vinh','Bến Tre'],
+      datasets: [
+        { label: 'T4 tương tác', data: [124, 156, 180, 145, 165, 142, 128, 95, 88, 102], backgroundColor: c.muted + '99', borderRadius: 6 },
+        { label: 'T5 tương tác', data: [477, 496, 513, 385, 425, 358, 312, 215, 198, 245], backgroundColor: c.amber + 'cc', borderRadius: 6 }
+      ]},
+    options: commonOpts()
+  });
+
+  /* ---- 3.8 FB Content ---- */
+  makeChart('ch_dig_contentType', {
+    type: 'doughnut',
+    data: { labels: ['Ảnh (52%)', 'Video (35%)', 'Văn bản (13%)'], datasets: [{
+      data: [52, 35, 13], backgroundColor: [c.amber, c.blue, c.muted],
+      borderWidth: 2, borderColor: c.surface
+    }]},
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { color: c.muted, font: { size: 11 }}},
+        tooltip: commonOpts().plugins.tooltip, datalabels: { display: false }}
+    }
+  });
+
+  makeChart('ch_dig_erType', {
+    type: 'bar',
+    data: { labels: ['Ảnh','Video','Văn bản'], datasets: [{
+      label: 'ER trung bình (%)', data: [18.5, 24.8, 22.3],
+      backgroundColor: [c.amber + 'cc', c.green + 'cc', c.blue + 'cc'],
+      borderRadius: 10
+    }]},
+    options: commonOpts()
+  });
+
+  /* ---- 3.9 FB Weak: post vs ER ---- */
+  makeChart('ch_dig_postVsEr', {
+    type: 'scatter',
+    data: { datasets: [
+      { label: 'Đăng nhiều · ER thấp', data: [
+          { x: 285, y: 3.2 }, { x: 258, y: 3.5 }, { x: 232, y: 3.8 }, { x: 245, y: 4.0 }, { x: 268, y: 3.6 }
+        ], backgroundColor: c.red + 'aa', pointRadius: 10, pointHoverRadius: 14, borderColor: c.red, borderWidth: 1.5 },
+      { label: 'Đăng ít · ER thấp', data: [
+          { x: 62, y: 4.1 }, { x: 75, y: 4.3 }, { x: 88, y: 4.5 }
+        ], backgroundColor: c.amber + 'aa', pointRadius: 10, pointHoverRadius: 14, borderColor: c.amber, borderWidth: 1.5 },
+      { label: 'Đăng vừa · ER cao (tốt)', data: [
+          { x: 180, y: 22.5 }, { x: 195, y: 24.8 }, { x: 165, y: 21.2 }, { x: 220, y: 20.5 }, { x: 175, y: 23.4 }, { x: 188, y: 25.6 }, { x: 205, y: 22.8 }, { x: 192, y: 24.2 }, { x: 168, y: 20.8 }, { x: 185, y: 23.6 }
+        ], backgroundColor: c.green + 'aa', pointRadius: 10, pointHoverRadius: 14, borderColor: c.green, borderWidth: 1.5 }
+    ]},
+    options: Object.assign({}, commonOpts(), {
+      scales: {
+        x: Object.assign({}, commonOpts().scales.x, { title: { display: true, text: 'Số bài đăng / tháng', color: c.muted }}),
+        y: Object.assign({}, commonOpts().scales.y, { title: { display: true, text: 'ER (%)', color: c.muted }})
+      }
+    })
+  });
+}
+
+</script>
+</body>
+</html>
